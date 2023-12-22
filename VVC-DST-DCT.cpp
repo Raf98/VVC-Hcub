@@ -193,20 +193,40 @@ void printMatrix (int n, int trCore[][32], bool includeAmpersand) {
 
 void concatInput(char* str, char* numberStr, int rowIndex, int matrixNumber) {
   strcat(str, "x");
-  sprintf(numberStr, "%d", rowIndex);
-  strcat(str, numberStr);
   strcat(str, "_");
-      
   sprintf(numberStr, "%d", abs(matrixNumber));
   strcat(str, numberStr);
-  //strcat(str, ")");
+  
+  strcat(str, "(");
+  sprintf(numberStr, "%d", rowIndex);
+  strcat(str, numberStr);
+  strcat(str, ")");
 }
 
+
+void printInputsToSignals (int n) {
+  char str[20];
+  char numberStr[10];
+  
+  for (int i = 0; i < n * n; ++i) {
+    strcpy(str, "");
+    strcat(str, "x(");
+    sprintf(numberStr, "%d", i);
+    strcat(str, numberStr);
+  
+    strcat(str, ") <= x");
+    sprintf(numberStr, "%d", i);
+    strcat(str, numberStr);
+    strcat(str, ";");
+    
+    printf("%s\n", str);
+  }
+}
 
 void printOutputsOperations (int n, int trCore[][32]) {
   int j = 0;
   int coeffFactor = 0;
-  char str[400];
+  char str[500];
   //char inputs[300000];
   char inputs[10];
   char numberStr[8];
@@ -215,10 +235,10 @@ void printOutputsOperations (int n, int trCore[][32]) {
   
   for (int k = 0; k < n*n; k++) {
     
-    strcpy(str, "y");
+    strcpy(str, "y(");
     sprintf(numberStr, "%d", k);
     strcat(str, numberStr);
-    strcat(str, " <= ");
+    strcat(str, ") <= ");
     
     
     
@@ -247,6 +267,25 @@ void printOutputsOperations (int n, int trCore[][32]) {
   }
   
   //printf("%s\n", inputs);
+}
+
+void printSignalsToOutputs (int n) {
+  char str[20];
+  char numberStr[10];
+  
+  for (int i = 0; i < n * n; ++i) {
+    strcpy(str, "");
+    strcat(str, "y");
+    sprintf(numberStr, "%d", i);
+    strcat(str, numberStr);
+  
+    strcat(str, " <= y(");
+    sprintf(numberStr, "%d", i);
+    strcat(str, numberStr);
+    strcat(str, ");");
+    
+    printf("%s\n", str);
+  }
 }
 
 
@@ -285,7 +324,21 @@ int main( int argc, char *argv[] ) {
    printMatrix(32, trCoreDST7P32, includeAmpersand);
    printf("\n");
    
-   printf("-------------PRINTING DCT-VIII RESULTS VARS--------------------\n");
+   printf("-------------PRINTING DCT-VIII INPUTS TO SIGNALS--------------------\n");
+   printf("DCT-VIII 4x4:\n");
+   printInputsToSignals(4);
+   printf("\n");
+   printf("DCT-VIII 8x8:\n");
+   printInputsToSignals(8);
+   printf("\n");
+   printf("DCT-VIII 16x16:\n");
+   printInputsToSignals(16);
+   printf("\n");
+   printf("DCT-VIII 32x32:\n");
+   printInputsToSignals(32);
+   printf("\n");
+   
+   printf("-------------PRINTING DCT-VIII OUTPUTS OPS--------------------\n");
    printf("DCT-VIII 4x4:\n");
    printOutputsOperations(4, trCoreDCT8P4);
    printf("\n");
@@ -298,7 +351,36 @@ int main( int argc, char *argv[] ) {
    printf("DCT-VIII 32x32:\n");
    printOutputsOperations(32, trCoreDCT8P32);
    printf("\n");
-   printf("-------------PRINTING DST-VII MATRICES--------------------\n");  
+   
+   printf("-------------PRINTING DCT-VIII SIGNALS TO OUTPUTS--------------------\n");
+   printf("DCT-VIII 4x4:\n");
+   printSignalsToOutputs(4);
+   printf("\n");
+   printf("DCT-VIII 8x8:\n");
+   printSignalsToOutputs(8);
+   printf("\n");
+   printf("DCT-VIII 16x16:\n");
+   printSignalsToOutputs(16);
+   printf("\n");
+   printf("DCT-VIII 32x32:\n");
+   printSignalsToOutputs(32);
+   printf("\n");
+   
+   printf("-------------PRINTING DST-VII INPUTS TO SIGNALS--------------------\n");
+   printf("DST-VII 4x4:\n");
+   printInputsToSignals(4);
+   printf("\n");
+   printf("DST-VII 8x8:\n");
+   printInputsToSignals(8);
+   printf("\n");
+   printf("DST-VII 16x16:\n");
+   printInputsToSignals(16);
+   printf("\n");
+   printf("DST-VII 32x32:\n");
+   printInputsToSignals(32);
+   printf("\n");
+   
+   printf("-------------PRINTING DST-VII OUTPUTS OPS--------------------\n");  
    printf("DST-VII 4x4:\n");
    printOutputsOperations(4, trCoreDST7P4);
    printf("\n");
@@ -310,5 +392,19 @@ int main( int argc, char *argv[] ) {
    printf("\n");
    printf("DST-VII 32x32:\n");
    printOutputsOperations(32, trCoreDST7P32);
+   printf("\n");
+   
+   printf("-------------PRINTING DST-VII SIGNALS TO OUTPUTS--------------------\n");
+   printf("DST-VII 4x4:\n");
+   printSignalsToOutputs(4);
+   printf("\n");
+   printf("DST-VII 8x8:\n");
+   printSignalsToOutputs(8);
+   printf("\n");
+   printf("DST-VII 16x16:\n");
+   printSignalsToOutputs(16);
+   printf("\n");
+   printf("DST-VII 32x32:\n");
+   printSignalsToOutputs(32);
    printf("\n");
 }
