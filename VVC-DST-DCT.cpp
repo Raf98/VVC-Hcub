@@ -197,7 +197,7 @@ void concatInput(char* str, char* numberStr, int rowIndex, int matrixNumber) {
   sprintf(numberStr, "%d", abs(matrixNumber));
   strcat(str, numberStr);
   
-  strcat(str, "(");
+  strcat(str, "(i*8 + ");
   sprintf(numberStr, "%d", rowIndex);
   strcat(str, numberStr);
   strcat(str, ")");
@@ -224,19 +224,16 @@ void printInputsToSignals (int n) {
 }
 
 void printOutputsOperations (int n, int trCore[][32]) {
-  int j = 0;
-  int coeffFactor = 0;
-  char str[500];
-  //char inputs[300000];
+  char str[600];
   char inputs[10];
   char numberStr[8];
   
   strcpy(inputs, "");
   
-  for (int k = 0; k < n*n; k++) {
+  for (int j = 0; j < n; ++j) {
     
-    strcpy(str, "y(");
-    sprintf(numberStr, "%d", k);
+    strcpy(str, "y(i*8 + ");
+    sprintf(numberStr, "%d", j);
     strcat(str, numberStr);
     strcat(str, ") <= ");
     
@@ -251,19 +248,9 @@ void printOutputsOperations (int n, int trCore[][32]) {
         continue;
       }
     
-      concatInput(str, numberStr, i + coeffFactor, trCore[i][j]);
-      
-      //concatInput(inputs, numberStr, i + coeffFactor, trCore[i][j]);
-      //strcat(inputs, k == n*n - 1 && i == n - 1 ? ":" : ",");
-      
+      concatInput(str, numberStr, i, trCore[i][j]);
     }
     printf("%s;\n", str);
-    //strcpy(str, "");
-    ++j;
-    if ( j == n ) {
-      j = 0;
-      coeffFactor += n;
-    }
   }
   
   //printf("%s\n", inputs);
