@@ -309,7 +309,7 @@ void printSignalsToOutputs (int n) {
     strcat(outputStr[j], numberStr);
     
     if (countOutputs == n - 1) {
-      strcat(outputStr[j], ": out std_logic_vector(inBits - 1 downto 0);");
+      strcat(outputStr[j], ": out std_logic_vector(outBits - 1 downto 0);");
       //printf("%s\n", outputStr);
       countOutputs = 0;
       ++j;

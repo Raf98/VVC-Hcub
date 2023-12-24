@@ -1,2 +1,14 @@
 VVC-DST-DCT
 VVC-DST-DCT.exe
+
+*.vhd.bak
+*.vht.bak
+*.qws
+db
+incremental_db
+output_files
+simulation
+*.exe
+*.png
+*.jpg
+*.pdf
