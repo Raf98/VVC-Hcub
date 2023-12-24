@@ -207,7 +207,14 @@ void concatInput(char* str, char* numberStr, int rowIndex, int matrixNumber) {
 void printInputsToSignals (int n) {
   char str[20];
   char numberStr[10];
+  char inputStr[32][500];
   
+  for (int i = 0; i < n; ++i) {
+    strcpy(inputStr[i], "");
+  }
+  
+  int countInputs = 0;
+  int j = 0;
   for (int i = 0; i < n * n; ++i) {
     strcpy(str, "");
     strcat(str, "x(");
@@ -220,6 +227,24 @@ void printInputsToSignals (int n) {
     strcat(str, ";");
     
     printf("%s\n", str);
+    
+    strcat(inputStr[j], "x");
+    strcat(inputStr[j], numberStr);
+    
+    if (countInputs == n - 1) {
+      strcat(inputStr[j], ": in std_logic_vector(inBits - 1 downto 0);");
+      //printf("%s\n", inputStr);
+      countInputs = 0;
+      ++j;
+      //strcpy(inputStr, "");
+    } else {
+      strcat(inputStr[j], ", ");
+      ++countInputs;
+    }
+  }
+  
+  for (int i = 0; i < n; ++i) {
+    printf("%s\n", inputStr[i]);
   }
 }
 
@@ -259,7 +284,14 @@ void printOutputsOperations (int n, int trCore[][32]) {
 void printSignalsToOutputs (int n) {
   char str[20];
   char numberStr[10];
+  char outputStr[32][5000];
   
+  for (int i = 0; i < n; ++i) {
+    strcpy(outputStr[i], "");
+  }
+  
+  int countOutputs = 0;
+  int j = 0;
   for (int i = 0; i < n * n; ++i) {
     strcpy(str, "");
     strcat(str, "y");
@@ -272,6 +304,23 @@ void printSignalsToOutputs (int n) {
     strcat(str, ");");
     
     printf("%s\n", str);
+    
+    strcat(outputStr[j], "y");
+    strcat(outputStr[j], numberStr);
+    
+    if (countOutputs == n - 1) {
+      strcat(outputStr[j], ": out std_logic_vector(inBits - 1 downto 0);");
+      //printf("%s\n", outputStr);
+      countOutputs = 0;
+      ++j;
+    } else {
+      strcat(outputStr[j], ", ");
+      ++countOutputs;
+    }
+  }
+  
+  for (int i = 0; i < n; ++i) {
+    printf("%s\n", outputStr[i]);
   }
 }
 
