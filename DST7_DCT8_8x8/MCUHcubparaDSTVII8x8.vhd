@@ -5,8 +5,9 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.std_logic_arith.all;
+--use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
+--use ieee.std_logic_signed.all;
 
 
 entity MCUHcubparaDSTVII8x8 is
@@ -29,6 +30,8 @@ end entity;
 
 
 architecture behavior of MCUHcubparaDSTVII8x8 is
+		signal x_resized			: std_logic_vector(15 downto 0);
+		
 		-- First row
 		signal shift8x 			: std_logic_vector(11 downto 0);
 		signal shift16x 			: std_logic_vector(12 downto 0);
@@ -67,12 +70,19 @@ architecture behavior of MCUHcubparaDSTVII8x8 is
 		signal x86temp				: std_logic_vector(15 downto 0);
 
 		
+		function my_resize(x: std_logic_vector; new_size: integer) return std_logic_vector is
+			variable resized: std_logic_vector(new_size - 1 downto 0);
+			begin
+				resized := std_logic_vector(resize(signed(x), new_size));
+				return resized;
+			end function my_resize;
+		
 
 
 begin 
 						
 --------------------- 1ª linha de deslocadores -----------		
-		shift8x(11 downto 3) <= x(8 downto 0); 
+		shift8x(11 downto 3) <= x_resized(8 downto 0); 
 		shift8x(2 downto 0) <= "000";
 		
 		shift16x(12 downto 4) <= x(8 downto 0); 
@@ -83,13 +93,13 @@ begin
 
 -------------------1ª linha de somadores e subtratores----------------		
 		
-		sub15x(12 downto 0) <= shift16x - ("0000" & x);
-		adder17x(12 downto 0) <= shift16x + ("0000" & x);	
+		sub15x(12 downto 0) <= shift16x - my_resize(x, 13);
+		adder17x(12 downto 0) <= shift16x + my_resize(x, 13);
 		
 -------------------1ª linha de resultados----------------		
 		
-		x17temp <= "000" & adder17x;
-		x32temp <= "00" & shift32x;
+		x17temp <= my_resize(adder17x, 16);
+		x32temp <= my_resize(shift32x, 16);
 		
 -------------------2ª linha de deslocadores----------------			
 		
@@ -104,15 +114,15 @@ begin
 		
 ---------------2ª linha de subtratores e somadores----------		
 		
-		sub43x(14 downto 0) <= shift60x - ("00" & adder17x);
-		adder23x(12 downto 0) <= sub15x + ('0' & shift8x);
-		adder85x(14 downto 0) <= ("00" & adder17x) + shift68x;
+		sub43x(14 downto 0) <= shift60x - my_resize(adder17x, 15);
+		adder23x(12 downto 0) <= sub15x + my_resize(shift8x, 13);
+		adder85x(14 downto 0) <= my_resize(adder17x, 15) + shift68x;
 		
 -------------------2ª linha de resultados----------------		
 
-		x46temp <= "00" & shift46x;
-		x60temp <= '0' & shift60x;
-		x85temp <= '0' & adder85x;
+		x46temp <= my_resize(shift46x, 16);
+		x60temp <= my_resize(shift60x, 16);
+		x85temp <= my_resize(adder85x, 16);
 
 -------------------3ª linha de deslocadores----------------			
 		
@@ -124,13 +134,13 @@ begin
 		
 ---------------3ª linha de subtratores e somadores----------
 		
-		sub71x(15 downto 0) <= shift86x - ("000" & sub15x); -- verificar se essa eh a ordem, considerando o arvore do Spiral
+		sub71x(15 downto 0) <= shift86x - my_resize(sub15x, 16); -- verificar se essa eh a ordem, considerando o arvore do Spiral
 		adder39x(12 downto 0) <= adder23x + shift16x;
 		
 -------------------3ª linha de resultados----------------		
 
 		x71temp <= sub71x;
-		x78temp <= "00" & shift78x;
+		x78temp <= my_resize(shift78x, 16);
 		x86temp <= shift86x;
 		
 -------------------***1º Resultado***------------------------		
