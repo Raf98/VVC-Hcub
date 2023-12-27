@@ -22,7 +22,8 @@ entity DST7_DCT8_8x8 is
 		numTr: 		integer := 8
 	);
 	port(
-		cin : in std_logic;
+		--cin : in std_logic;
+		op:												 in std_logic;
 		x0 ,x1 ,x2 ,x3 ,x4 ,x5 ,x6 ,x7: 			 in std_logic_vector(inBits - 1 downto 0);
 		x8 ,x9 ,x10 ,x11 ,x12 ,x13 ,x14 ,x15:   in std_logic_vector(inBits - 1 downto 0);
 		x16 ,x17 ,x18 ,x19 ,x20 ,x21 ,x22 ,x23: in std_logic_vector(inBits - 1 downto 0);
@@ -69,7 +70,7 @@ x86	: out std_logic_vector (15 downto 0)
 		signal x: inputSignals;
 		
 		type outputSignals is array( 0 to numInOutputs - 1 ) of std_logic_vector( outBits - 1 downto 0 );
-		signal y: outputSignals;
+		signal y, y_dct, y_dst: outputSignals;
 			
 				
 			-- atribuir valores de x a sinais auxiliares, em formato de vetor
@@ -168,17 +169,37 @@ x(63) <= x63;
 						  
         end generate generateMCUs;
         
-        generateSignalsOutputs:        
+        generateSignalsOutputsDCT_8: 
             for i in 0 to numTr - 1 generate
-				    y(i*8 + 0) <= x_86(i*8 + 0) + x_85(i*8 + 1) + x_78(i*8 + 2) + x_71(i*8 + 3) + x_60(i*8 + 4) + x_46(i*8 + 5) + x_32(i*8 + 6) + x_17(i*8 + 7);
-		     	    y(i*8 + 1) <= x_85(i*8 + 0) + x_60(i*8 + 1) + x_17(i*8 + 2) - x_32(i*8 + 3) - x_71(i*8 + 4) - x_86(i*8 + 5) - x_78(i*8 + 6) - x_46(i*8 + 7);
-                y(i*8 + 2) <= x_78(i*8 + 0) + x_17(i*8 + 1) - x_60(i*8 + 2) - x_86(i*8 + 3) - x_46(i*8 + 4) + x_32(i*8 + 5) + x_85(i*8 + 6) + x_71(i*8 + 7);
-                y(i*8 + 3) <= x_71(i*8 + 0) - x_32(i*8 + 1) - x_86(i*8 + 2) - x_17(i*8 + 3) + x_78(i*8 + 4) + x_60(i*8 + 5) - x_46(i*8 + 6) - x_85(i*8 + 7);
-		    	    y(i*8 + 4) <= x_60(i*8 + 0) - x_71(i*8 + 1) - x_46(i*8 + 2) + x_78(i*8 + 3) + x_32(i*8 + 4) - x_85(i*8 + 5) - x_17(i*8 + 6) + x_86(i*8 + 7);
-                y(i*8 + 5) <= x_46(i*8 + 0) - x_86(i*8 + 1) + x_32(i*8 + 2) + x_60(i*8 + 3) - x_85(i*8 + 4) + x_17(i*8 + 5) + x_71(i*8 + 6) - x_78(i*8 + 7);
-                y(i*8 + 6) <= x_32(i*8 + 0) - x_78(i*8 + 1) + x_85(i*8 + 2) - x_46(i*8 + 3) - x_17(i*8 + 4) + x_71(i*8 + 5) - x_86(i*8 + 6) + x_60(i*8 + 7);
-                y(i*8 + 7) <= x_17(i*8 + 0) - x_46(i*8 + 1) + x_71(i*8 + 2) - x_85(i*8 + 3) + x_86(i*8 + 4) - x_78(i*8 + 5) + x_60(i*8 + 6) - x_32(i*8 + 7);	  
-            end generate generateSignalsOutputs;
+					 --with op select 
+				    y_dct(i*8 + 0) <= x_86(i*8 + 0) + x_85(i*8 + 1) + x_78(i*8 + 2) + x_71(i*8 + 3) + x_60(i*8 + 4) + x_46(i*8 + 5) + x_32(i*8 + 6) + x_17(i*8 + 7);-- when '0',
+										--x_17(i*8 + 0) + x_46(i*8 + 1) + x_71(i*8 + 2) + x_85(i*8 + 3) + x_86(i*8 + 4) + x_78(i*8 + 5) + x_60(i*8 + 6) + x_32(i*8 + 7) when others;					
+		     	    y_dct(i*8 + 1) <= x_85(i*8 + 0) + x_60(i*8 + 1) + x_17(i*8 + 2) - x_32(i*8 + 3) - x_71(i*8 + 4) - x_86(i*8 + 5) - x_78(i*8 + 6) - x_46(i*8 + 7);
+                y_dct(i*8 + 2) <= x_78(i*8 + 0) + x_17(i*8 + 1) - x_60(i*8 + 2) - x_86(i*8 + 3) - x_46(i*8 + 4) + x_32(i*8 + 5) + x_85(i*8 + 6) + x_71(i*8 + 7);
+                y_dct(i*8 + 3) <= x_71(i*8 + 0) - x_32(i*8 + 1) - x_86(i*8 + 2) - x_17(i*8 + 3) + x_78(i*8 + 4) + x_60(i*8 + 5) - x_46(i*8 + 6) - x_85(i*8 + 7);
+		    	    y_dct(i*8 + 4) <= x_60(i*8 + 0) - x_71(i*8 + 1) - x_46(i*8 + 2) + x_78(i*8 + 3) + x_32(i*8 + 4) - x_85(i*8 + 5) - x_17(i*8 + 6) + x_86(i*8 + 7);
+                y_dct(i*8 + 5) <= x_46(i*8 + 0) - x_86(i*8 + 1) + x_32(i*8 + 2) + x_60(i*8 + 3) - x_85(i*8 + 4) + x_17(i*8 + 5) + x_71(i*8 + 6) - x_78(i*8 + 7);
+                y_dct(i*8 + 6) <= x_32(i*8 + 0) - x_78(i*8 + 1) + x_85(i*8 + 2) - x_46(i*8 + 3) - x_17(i*8 + 4) + x_71(i*8 + 5) - x_86(i*8 + 6) + x_60(i*8 + 7);
+                y_dct(i*8 + 7) <= x_17(i*8 + 0) - x_46(i*8 + 1) + x_71(i*8 + 2) - x_85(i*8 + 3) + x_86(i*8 + 4) - x_78(i*8 + 5) + x_60(i*8 + 6) - x_32(i*8 + 7);	  
+            end generate generateSignalsOutputsDCT_8;
+				
+		   generateSignalsOutputsDST_7:        
+            for i in 0 to numTr - 1 generate
+				    y_dst(i*8 + 0) <= x_17(i*8 + 0) + x_46(i*8 + 1) + x_71(i*8 + 2) + x_85(i*8 + 3) + x_86(i*8 + 4) + x_78(i*8 + 5) + x_60(i*8 + 6) + x_32(i*8 + 7);
+					 y_dst(i*8 + 1) <= x_32(i*8 + 0) + x_78(i*8 + 1) + x_85(i*8 + 2) + x_46(i*8 + 3) - x_17(i*8 + 4) - x_71(i*8 + 5) - x_86(i*8 + 6) - x_60(i*8 + 7);
+				    y_dst(i*8 + 2) <= x_46(i*8 + 0) + x_86(i*8 + 1) + x_32(i*8 + 2) - x_60(i*8 + 3) - x_85(i*8 + 4) - x_17(i*8 + 5) + x_71(i*8 + 6) + x_78(i*8 + 7);
+					 y_dst(i*8 + 3) <= x_60(i*8 + 0) + x_71(i*8 + 1) - x_46(i*8 + 2) - x_78(i*8 + 3) + x_32(i*8 + 4) + x_85(i*8 + 5) - x_17(i*8 + 6) - x_86(i*8 + 7);
+					 y_dst(i*8 + 4) <= x_71(i*8 + 0) + x_32(i*8 + 1) - x_86(i*8 + 2) + x_17(i*8 + 3) + x_78(i*8 + 4) - x_60(i*8 + 5) - x_46(i*8 + 6) + x_85(i*8 + 7);
+                y_dst(i*8 + 5) <= x_78(i*8 + 0) - x_17(i*8 + 1) - x_60(i*8 + 2) + x_86(i*8 + 3) - x_46(i*8 + 4) - x_32(i*8 + 5) + x_85(i*8 + 6) - x_71(i*8 + 7);
+                y_dst(i*8 + 6) <= x_85(i*8 + 0) - x_60(i*8 + 1) + x_17(i*8 + 2) + x_32(i*8 + 3) - x_71(i*8 + 4) + x_86(i*8 + 5) - x_78(i*8 + 6) + x_46(i*8 + 7);
+                y_dst(i*8 + 7) <= x_86(i*8 + 0) - x_85(i*8 + 1) + x_78(i*8 + 2) - x_71(i*8 + 3) + x_60(i*8 + 4) - x_46(i*8 + 5) + x_32(i*8 + 6) - x_17(i*8 + 7);	  
+            end generate generateSignalsOutputsDST_7;
+				
+			with op select
+			y <= y_dct when '0',
+			     y_dst when others;
+				
+					 
         
 y0 <= y(0);
 y1 <= y(1);
