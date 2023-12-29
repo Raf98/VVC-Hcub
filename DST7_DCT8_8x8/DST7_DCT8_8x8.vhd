@@ -14,12 +14,12 @@ use ieee.std_logic_unsigned.all;
 	
 entity DST7_DCT8_8x8 is
 	generic(
-		Nbits:      integer := 9;
-		inBits:	        integer := 9;
-		numInOutputs:	integer := 64;
-		outBits:	        integer := 16;
-		rNum:		integer := 4;
-		numTr: 		integer := 8
+		Nbits				:  integer := 9;
+		inBits			:	integer := 9;
+		numInOutputs	:	integer := 64;
+		outBits			:	integer := 17;
+		rNum				:  integer := 4;
+		numTr				:  integer := 8
 	);
 	port(
 		--cin : in std_logic;
@@ -33,14 +33,14 @@ entity DST7_DCT8_8x8 is
 		x48 ,x49 ,x50 ,x51 ,x52 ,x53 ,x54 ,x55: in std_logic_vector(inBits - 1 downto 0);
 		x56 ,x57 ,x58 ,x59 ,x60 ,x61 ,x62 ,x63: in std_logic_vector(inBits - 1 downto 0);
 		
-		y0, y1, y2, y3, y4, y5, y6, y7: out std_logic_vector(outBits - 1 downto 0);
-		y8, y9, y10, y11, y12, y13, y14, y15: out std_logic_vector(outBits - 1 downto 0);
-		y16, y17, y18, y19, y20, y21, y22, y23: out std_logic_vector(outBits - 1 downto 0);
-		y24, y25, y26, y27, y28, y29, y30, y31: out std_logic_vector(outBits - 1 downto 0);
-		y32, y33, y34, y35, y36, y37, y38, y39: out std_logic_vector(outBits - 1 downto 0);
-		y40, y41, y42, y43, y44, y45, y46, y47: out std_logic_vector(outBits - 1 downto 0);
-		y48, y49, y50, y51, y52, y53, y54, y55: out std_logic_vector(outBits - 1 downto 0);
-		y56, y57, y58, y59, y60, y61, y62, y63: out std_logic_vector(outBits - 1 downto 0)
+		y0, y1, y2, y3, y4, y5, y6, y7		  : out std_logic_vector(outBits   downto 0);
+		y8, y9, y10, y11, y12, y13, y14, y15  : out std_logic_vector(outBits   downto 0);
+		y16, y17, y18, y19, y20, y21, y22, y23: out std_logic_vector(outBits   downto 0);
+		y24, y25, y26, y27, y28, y29, y30, y31: out std_logic_vector(outBits   downto 0);
+		y32, y33, y34, y35, y36, y37, y38, y39: out std_logic_vector(outBits   downto 0);
+		y40, y41, y42, y43, y44, y45, y46, y47: out std_logic_vector(outBits   downto 0);
+		y48, y49, y50, y51, y52, y53, y54, y55: out std_logic_vector(outBits   downto 0);
+		y56, y57, y58, y59, y60, y61, y62, y63: out std_logic_vector(outBits   downto 0)
 );
 
 end DST7_DCT8_8x8;
@@ -50,39 +50,31 @@ architecture behavior of DST7_DCT8_8x8 is
 		
 		Component MCUHcubparaDSTVII8x8 is
 			PORT( 
-				x 	: in std_logic_vector (8 downto 0);
-x17	: out std_logic_vector (15 downto 0);
-x32 	: out std_logic_vector (15 downto 0);
-x46 	: out std_logic_vector (15 downto 0);
-x60	: out std_logic_vector (15 downto 0);
-x71	: out std_logic_vector (15 downto 0);
-x78 	: out std_logic_vector (15 downto 0);
-x85 	: out std_logic_vector (15 downto 0);
-x86	: out std_logic_vector (15 downto 0)
+				x 		: in  std_logic_vector (inBits - 1 downto 0);
+				x17	: out std_logic_vector (outBits 	  downto 0);
+				x32 	: out std_logic_vector (outBits    downto 0);
+				x46 	: out std_logic_vector (outBits    downto 0);
+				x60	: out std_logic_vector (outBits    downto 0);
+				x71	: out std_logic_vector (outBits 	  downto 0);
+				x78 	: out std_logic_vector (outBits 	  downto 0);
+				x85 	: out std_logic_vector (outBits    downto 0);
+				x86	: out std_logic_vector (outBits 	  downto 0)
 );
 		end Component;
 		
 		
-		type hcubOutputs is array( 0 to numInOutputs - 1 ) of std_logic_vector( outBits - 1 downto 0 );
+		type hcubOutputs is array( 0 to numInOutputs - 1 ) of std_logic_vector( outBits downto 0 );
 		signal x_17, x_32, x_46, x_60, x_71, x_78, x_85, x_86:	hcubOutputs;
 		
 		type inputSignals is array( 0 to numInOutputs - 1 ) of std_logic_vector( inBits - 1 downto 0 );
 		signal x: inputSignals;
 		
-		type outputSignals is array( 0 to numInOutputs - 1 ) of std_logic_vector( outBits - 1 downto 0 );
+		type outputSignals is array( 0 to numInOutputs - 1 ) of std_logic_vector( outBits downto 0 );
 		signal y, y_dct, y_dst: outputSignals;
 			
 				
 			-- atribuir valores de x a sinais auxiliares, em formato de vetor
 			--usar array para os sinais x
-		signal x0_29, x0_55, x0_74, x0_84, x1_29, x1_55, x1_74, x1_84 	: std_logic_vector(15 downto 0);
-		signal x2_29, x2_55, x2_74, x2_84, x3_29, x3_55, x3_74, x3_84 	: std_logic_vector(15 downto 0);
-		signal x4_29, x4_55, x4_74, x4_84, x5_29, x5_55, x5_74, x5_84 	: std_logic_vector(15 downto 0);
-		signal x6_29, x6_55, x6_74, x6_84, x7_29, x7_55, x7_74, x7_84 	: std_logic_vector(15 downto 0);
-		signal x8_29, x8_55, x8_74, x8_84, x9_29, x9_55, x9_74, x9_84 	: std_logic_vector(15 downto 0);
-		signal x10_29, x10_55, x10_74, x10_84, x11_29, x11_55, x11_74, x11_84 	: std_logic_vector(15 downto 0);
-		signal x12_29, x12_55, x12_74, x12_84, x13_29, x13_55, x13_74, x13_84 	: std_logic_vector(15 downto 0);
-		signal x14_29, x14_55, x14_74, x14_84, x15_29, x15_55, x15_74, x15_84 	: std_logic_vector(15 downto 0);
 	
 
 begin 
