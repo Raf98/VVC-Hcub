@@ -191,13 +191,16 @@ void printMatrix (int n, int trCore[][32], bool includeAmpersand) {
   }
 }
 
-void concatInput(char* str, char* numberStr, int rowIndex, int matrixNumber) {
+void concatInput(char* str, char* numberStr, int rowIndex, int matrixNumber, int n) {
   strcat(str, "x");
   strcat(str, "_");
   sprintf(numberStr, "%d", abs(matrixNumber));
   strcat(str, numberStr);
   
-  strcat(str, "(i*8 + ");
+  strcat(str, "(i*");
+    sprintf(numberStr, "%d", n);
+    strcat(str, numberStr);
+    strcat(str, " + ");
   sprintf(numberStr, "%d", rowIndex);
   strcat(str, numberStr);
   strcat(str, ")");
@@ -248,7 +251,27 @@ void printInputsToSignals (int n) {
   }
 }
 
-void printOutputsOperations (int n, int trCore[][32]) {
+void printtMCMHucubBlock(int n, int trCore[][32]) {
+  char str[700];
+  char numberStr[8];
+
+  strcpy(str, "port map(\n\t\t\t\t\t\tx => x(i),\n");
+  for(int i = 0; i < n; ++i) {
+    int matrixNumber = trCore[0][i];
+    strcat(str, "\t\t\t\t\t\tx");
+    sprintf(numberStr, "%d", abs(matrixNumber));
+    strcat(str, numberStr);
+    strcat(str, " => x_");
+    sprintf(numberStr, "%d", abs(matrixNumber));
+    strcat(str, numberStr);
+    strcat(str, "(i)");
+    strcat(str, i == n - 1 ? ");\n" : ",\n");
+  }
+
+  printf("%s", str);
+}
+
+void printOutputsOperations (int n, int trCore[][32], bool dct) {
   char str[600];
   char inputs[10];
   char numberStr[8];
@@ -257,7 +280,12 @@ void printOutputsOperations (int n, int trCore[][32]) {
   
   for (int j = 0; j < n; ++j) {
     
-    strcpy(str, "y(i*8 + ");
+    strcpy(str, "\t\t\t\t\t\ty_");
+    strcat(str, dct == true ? "dct" : "dst");
+    strcat(str, "(i*");
+    sprintf(numberStr, "%d", n);
+    strcat(str, numberStr);
+    strcat(str, " + ");
     sprintf(numberStr, "%d", j);
     strcat(str, numberStr);
     strcat(str, ") <= ");
@@ -273,7 +301,7 @@ void printOutputsOperations (int n, int trCore[][32]) {
         continue;
       }
     
-      concatInput(str, numberStr, i, trCore[i][j]);
+      concatInput(str, numberStr, i, trCore[i][j], n);
     }
     printf("%s;\n", str);
   }
@@ -324,6 +352,15 @@ void printSignalsToOutputs (int n) {
   }
 }
 
+/*
+int tVals[] = {88, 88, 87, 85, 81, 77, 73, 68, 62, 55, 48, 40, 33, 25, 17, 8};
+    
+    int max = 0;
+    for (int i = 0; i < 16; i++) {
+        max += 255*tVals[i];
+    }
+    printf("%d", max);
+*/
 
 int main( int argc, char *argv[] ) {
 
@@ -376,16 +413,16 @@ int main( int argc, char *argv[] ) {
    
    printf("-------------PRINTING DCT-VIII OUTPUTS OPS--------------------\n");
    printf("DCT-VIII 4x4:\n");
-   printOutputsOperations(4, trCoreDCT8P4);
+   printOutputsOperations(4, trCoreDCT8P4, true);
    printf("\n");
    printf("DCT-VIII 8x8:\n");
-   printOutputsOperations(8, trCoreDCT8P8);
+   printOutputsOperations(8, trCoreDCT8P8, true);
    printf("\n");
    printf("DCT-VIII 16x16:\n");
-   printOutputsOperations(16, trCoreDCT8P16);
+   printOutputsOperations(16, trCoreDCT8P16, true);
    printf("\n");
    printf("DCT-VIII 32x32:\n");
-   printOutputsOperations(32, trCoreDCT8P32);
+   printOutputsOperations(32, trCoreDCT8P32, true);
    printf("\n");
    
    printf("-------------PRINTING DCT-VIII SIGNALS TO OUTPUTS--------------------\n");
@@ -400,6 +437,20 @@ int main( int argc, char *argv[] ) {
    printf("\n");
    printf("DCT-VIII 32x32:\n");
    printSignalsToOutputs(32);
+   printf("\n");
+
+      printf("-------------PRINTING DCT-VIII/ DST-VII MCM HCUB BLOCKS--------------------\n");
+   printf("DCT-VIII/ DST-VII 4x4:\n");
+   printtMCMHucubBlock(4, trCoreDST7P4);
+   printf("\n");
+   printf("DCT-VIII/ DST-VII 8x8:\n");
+   printtMCMHucubBlock(8, trCoreDST7P8);
+   printf("\n");
+   printf("DCT-VIII/ DST-VII 16x16:\n");
+   printtMCMHucubBlock(15, trCoreDST7P16);
+   printf("\n");
+   printf("DCT-VIII/ DST-VII 32x32:\n");
+   printtMCMHucubBlock(31, trCoreDST7P32);
    printf("\n");
    
    printf("-------------PRINTING DST-VII INPUTS TO SIGNALS--------------------\n");
@@ -418,16 +469,16 @@ int main( int argc, char *argv[] ) {
    
    printf("-------------PRINTING DST-VII OUTPUTS OPS--------------------\n");  
    printf("DST-VII 4x4:\n");
-   printOutputsOperations(4, trCoreDST7P4);
+   printOutputsOperations(4, trCoreDCT8P4, false);
    printf("\n");
    printf("DST-VII 8x8:\n");
-   printOutputsOperations(8, trCoreDST7P8);
+   printOutputsOperations(8, trCoreDCT8P8, false);
    printf("\n");
    printf("DST-VII 16x16:\n");
-   printOutputsOperations(16, trCoreDST7P16);
+   printOutputsOperations(16, trCoreDCT8P16, false);
    printf("\n");
    printf("DST-VII 32x32:\n");
-   printOutputsOperations(32, trCoreDST7P32);
+   printOutputsOperations(32, trCoreDCT8P32, false);
    printf("\n");
    
    printf("-------------PRINTING DST-VII SIGNALS TO OUTPUTS--------------------\n");

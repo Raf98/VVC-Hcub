@@ -13,13 +13,13 @@ use ieee.std_logic_unsigned.all;
 entity MCUHcub_DST7_DCT8_16x16 is
 generic(
 		inBits			:	integer := 9;
-		outBits			:	integer := 17
+		outBits			:	integer := 23
 );
 port (
 
 x 		: in  std_logic_vector (inBits - 1 downto 0);
 --8 & 17 & 25 & 33 & 40 & 48 & 55 & 62 & 68 & 73 & 77 & 81 & 85 & 87 & 88
-x8		: out std_logic_vector (outBits 	  downto 0);
+x8		: out std_logic_vector (outBits downto 0);
 x17	: out std_logic_vector (outBits downto 0);
 x25 	: out std_logic_vector (outBits downto 0);
 x33 	: out std_logic_vector (outBits downto 0);
@@ -119,12 +119,12 @@ begin
 		shift16x(outBits downto 4) <= x_resized(outBits - 4 downto 0); 
 		shift16x(3 downto 0) <= "0000";
 		
-		shift32x(outBits downto 5) <= x(outBits - 5 downto 0); 
+		shift32x(outBits downto 5) <= x_resized(outBits - 5 downto 0); 
 		shift32x(4 downto 0) <= "00000";
 
 -------------------1ª linha de somadores e subtratores----------------		
 		
-		sub3x(outBits downto 0) <= shift4x - x_resized;;
+		sub3x(outBits downto 0) <= shift4x - x_resized;
 		sub31x(outBits downto 0) <= shift32x - x_resized;
 		
 		adder5x(outBits downto 0) <= shift4x + x_resized;
