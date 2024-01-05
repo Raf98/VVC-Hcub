@@ -469,16 +469,16 @@ int main( int argc, char *argv[] ) {
    
    printf("-------------PRINTING DST-VII OUTPUTS OPS--------------------\n");  
    printf("DST-VII 4x4:\n");
-   printOutputsOperations(4, trCoreDCT8P4, false);
+   printOutputsOperations(4, trCoreDST7P4, false);
    printf("\n");
    printf("DST-VII 8x8:\n");
-   printOutputsOperations(8, trCoreDCT8P8, false);
+   printOutputsOperations(8, trCoreDST7P8, false);
    printf("\n");
    printf("DST-VII 16x16:\n");
-   printOutputsOperations(16, trCoreDCT8P16, false);
+   printOutputsOperations(16, trCoreDST7P16, false);
    printf("\n");
    printf("DST-VII 32x32:\n");
-   printOutputsOperations(32, trCoreDCT8P32, false);
+   printOutputsOperations(32, trCoreDST7P32, false);
    printf("\n");
    
    printf("-------------PRINTING DST-VII SIGNALS TO OUTPUTS--------------------\n");

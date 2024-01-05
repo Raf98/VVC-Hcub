@@ -13,7 +13,7 @@ use ieee.std_logic_unsigned.all;
 entity MCUHcub_DST7_DCT8_16x16 is
 generic(
 		inBits			:	integer := 9;
-		outBits			:	integer := 19
+		outBits			:	integer := 23
 );
 port (
 

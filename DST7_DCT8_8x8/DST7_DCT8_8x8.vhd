@@ -22,7 +22,6 @@ entity DST7_DCT8_8x8 is
 		numTr				:  integer := 8
 	);
 	port(
-		--cin : in std_logic;
 		op:												 in std_logic;
 		x0 ,x1 ,x2 ,x3 ,x4 ,x5 ,x6 ,x7: 			 in std_logic_vector(inBits - 1 downto 0);
 		x8 ,x9 ,x10 ,x11 ,x12 ,x13 ,x14 ,x15:   in std_logic_vector(inBits - 1 downto 0);
