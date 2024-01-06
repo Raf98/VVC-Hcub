@@ -10,7 +10,7 @@ use ieee.std_logic_unsigned.all;
 --use ieee.std_logic_signed.all;
 
 
-entity MCUHcub_DST7_DCT8_16x16 is
+entity MCUHcub_DST7_DCT8_32x32 is
 generic(
 		inBits			:	integer := 9;
 		outBits			:	integer := 23
@@ -18,29 +18,45 @@ generic(
 port (
 
 x 		: in  std_logic_vector (inBits - 1 downto 0);
---8 & 17 & 25 & 33 & 40 & 48 & 55 & 62 & 68 & 73 & 77 & 81 & 85 & 87 & 88
-x8		: out std_logic_vector (outBits downto 0);
+--4 & 9 & 13 & 17 & 21 & 26 & 30 & 34 & 38 & 42 & 46 & 50 & 53 & 56 & 60 & 63 & 66 & 68 & 72 & 74 & 77 & 78 & 80 & 82 & 84 & 85 & 86 & 87 & 88 & 89 & 90 & 90
+x4		: out std_logic_vector (outBits downto 0);
+x9		: out std_logic_vector (outBits downto 0);
+x13	: out std_logic_vector (outBits downto 0);
 x17	: out std_logic_vector (outBits downto 0);
-x25 	: out std_logic_vector (outBits downto 0);
-x33 	: out std_logic_vector (outBits downto 0);
-x40 	: out std_logic_vector (outBits downto 0);
-x48 	: out std_logic_vector (outBits downto 0);
-x55 	: out std_logic_vector (outBits downto 0);
-x62	: out std_logic_vector (outBits downto 0);
+x21 	: out std_logic_vector (outBits downto 0);
+x26 	: out std_logic_vector (outBits downto 0);
+x30 	: out std_logic_vector (outBits downto 0);
+x34 	: out std_logic_vector (outBits downto 0);
+x38 	: out std_logic_vector (outBits downto 0);
+x42 	: out std_logic_vector (outBits downto 0);
+x46 	: out std_logic_vector (outBits downto 0);
+x50 	: out std_logic_vector (outBits downto 0);
+x53 	: out std_logic_vector (outBits downto 0);
+x56 	: out std_logic_vector (outBits downto 0);
+x60	: out std_logic_vector (outBits downto 0);
+x63	: out std_logic_vector (outBits downto 0);
+x66	: out std_logic_vector (outBits downto 0);
 x68	: out std_logic_vector (outBits downto 0);
-x73	: out std_logic_vector (outBits downto 0);
+x72	: out std_logic_vector (outBits downto 0);
+x74	: out std_logic_vector (outBits downto 0);
 x77	: out std_logic_vector (outBits downto 0);
-x81	: out std_logic_vector (outBits downto 0);
+x78	: out std_logic_vector (outBits downto 0);
+x80	: out std_logic_vector (outBits downto 0);
+x82	: out std_logic_vector (outBits downto 0);
+x84	: out std_logic_vector (outBits downto 0);
 x85 	: out std_logic_vector (outBits downto 0);
+x86 	: out std_logic_vector (outBits downto 0);
 x87	: out std_logic_vector (outBits downto 0);
-x88	: out std_logic_vector (outBits downto 0)
+x88	: out std_logic_vector (outBits downto 0);
+x89	: out std_logic_vector (outBits downto 0);
+x90	: out std_logic_vector (outBits downto 0)
 );
 
 
 end entity;
 
 
-architecture behavior of MCUHcub_DST7_DCT8_16x16 is
+architecture behavior of MCUHcub_DST7_DCT8_32x32 is
 		signal x_resized			: std_logic_vector(outBits downto 0);
 		
 		-- First row
@@ -49,52 +65,100 @@ architecture behavior of MCUHcub_DST7_DCT8_16x16 is
 		signal shift16x 			: std_logic_vector(outBits downto 0);
 		signal shift32x 			: std_logic_vector(outBits downto 0);
 		
-		signal sub3x				: std_logic_vector(outBits downto 0);
-		signal sub31x 				: std_logic_vector(outBits downto 0);
+		signal sub7x				: std_logic_vector(outBits downto 0);
+		signal sub15x				: std_logic_vector(outBits downto 0);
+		signal sub63x 				: std_logic_vector(outBits downto 0);
 		
 		signal adder5x 			: std_logic_vector(outBits downto 0);
+		signal adder9x 			: std_logic_vector(outBits downto 0);
 		signal adder17x 			: std_logic_vector(outBits downto 0);
 		signal adder33x 			: std_logic_vector(outBits downto 0);
 		
 		
 		-- Second row
+		signal shift14x			: std_logic_vector(outBits downto 0);
 		signal shift24x			: std_logic_vector(outBits downto 0);
+		signal shift30x			: std_logic_vector(outBits downto 0);
+		signal shift34x			: std_logic_vector(outBits downto 0);
+		signal shift38x			: std_logic_vector(outBits downto 0);
 		signal shift40x			: std_logic_vector(outBits downto 0);
+		signal shift42x			: std_logic_vector(outBits downto 0);
 		signal shift48x			: std_logic_vector(outBits downto 0);
+		signal shift50x			: std_logic_vector(outBits downto 0);
+		signal shift60x			: std_logic_vector(outBits downto 0);
 		signal shift62x			: std_logic_vector(outBits downto 0);
+		signal shift66x			: std_logic_vector(outBits downto 0);
 		signal shift68x			: std_logic_vector(outBits downto 0);
+		signal shift72x			: std_logic_vector(outBits downto 0);
+		signal shift74x			: std_logic_vector(outBits downto 0);
 		signal shift80x			: std_logic_vector(outBits downto 0);
+		signal shift84x			: std_logic_vector(outBits downto 0);
 		
+		signal sub13x 				: std_logic_vector(outBits downto 0);
+		signal sub39x 				: std_logic_vector(outBits downto 0);
+		signal sub53x 				: std_logic_vector(outBits downto 0);
 		signal sub77x 				: std_logic_vector(outBits downto 0);
 		
 		signal adder11x 			: std_logic_vector(outBits downto 0);
+		signal adder19x 			: std_logic_vector(outBits downto 0);
+		signal adder21x 			: std_logic_vector(outBits downto 0);
+		signal adder23x 			: std_logic_vector(outBits downto 0);
 		signal adder25x 			: std_logic_vector(outBits downto 0);
+		signal adder37x 			: std_logic_vector(outBits downto 0);
+		signal adder41x 			: std_logic_vector(outBits downto 0);
+		signal adder45x 			: std_logic_vector(outBits downto 0);
 		signal adder55x 			: std_logic_vector(outBits downto 0);
 		signal adder73x 			: std_logic_vector(outBits downto 0);
 		signal adder81x 			: std_logic_vector(outBits downto 0);
 		signal adder85x 			: std_logic_vector(outBits downto 0);
 		
 		-- Third row
+		signal shift38x			: std_logic_vector(outBits downto 0);
+		signal shift74x			: std_logic_vector(outBits downto 0);
+		signal shift78x			: std_logic_vector(outBits downto 0);
+		signal shift82x			: std_logic_vector(outBits downto 0);
+		signal shift86x			: std_logic_vector(outBits downto 0);
 		signal shift88x			: std_logic_vector(outBits downto 0);
+		signal shift90x			: std_logic_vector(outBits downto 0);
 		
+		signal adder43x 			: std_logic_vector(outBits downto 0);
+		signal adder89x 			: std_logic_vector(outBits downto 0);
+		
+		signal sub77x 				: std_logic_vector(outBits downto 0);
 		signal sub87x 				: std_logic_vector(outBits downto 0);
 	
 		-- Ouput signals
-		signal x8temp				: std_logic_vector(outBits downto 0);
+		signal x4temp				: std_logic_vector(outBits downto 0);
+		signal x9temp				: std_logic_vector(outBits downto 0);
+		signal x13temp				: std_logic_vector(outBits downto 0);
 		signal x17temp				: std_logic_vector(outBits downto 0);
-		signal x25temp 			: std_logic_vector(outBits downto 0);
-		signal x33temp 			: std_logic_vector(outBits downto 0);
-		signal x40temp 			: std_logic_vector(outBits downto 0);
-		signal x48temp 			: std_logic_vector(outBits downto 0);
-		signal x55temp 			: std_logic_vector(outBits downto 0);
-		signal x62temp				: std_logic_vector(outBits downto 0);
+		signal x21temp 			: std_logic_vector(outBits downto 0);
+		signal x26temp 			: std_logic_vector(outBits downto 0);
+		signal x30temp 			: std_logic_vector(outBits downto 0);
+		signal x34temp 			: std_logic_vector(outBits downto 0);
+		signal x38temp 			: std_logic_vector(outBits downto 0);
+		signal x42temp 			: std_logic_vector(outBits downto 0);
+		signal x46temp 			: std_logic_vector(outBits downto 0);
+		signal x50temp 			: std_logic_vector(outBits downto 0);
+		signal x53temp 			: std_logic_vector(outBits downto 0);
+		signal x56temp 			: std_logic_vector(outBits downto 0);
+		signal x60temp				: std_logic_vector(outBits downto 0);
+		signal x63temp				: std_logic_vector(outBits downto 0);
+		signal x66temp				: std_logic_vector(outBits downto 0);
 		signal x68temp				: std_logic_vector(outBits downto 0);
-		signal x73temp				: std_logic_vector(outBits downto 0);
+		signal x72temp				: std_logic_vector(outBits downto 0);
+		signal x74temp				: std_logic_vector(outBits downto 0);
 		signal x77temp				: std_logic_vector(outBits downto 0);
-		signal x81temp				: std_logic_vector(outBits downto 0);		
+		signal x78temp				: std_logic_vector(outBits downto 0);
+		signal x80temp				: std_logic_vector(outBits downto 0);
+		signal x82temp				: std_logic_vector(outBits downto 0);
+		signal x84temp				: std_logic_vector(outBits downto 0);
 		signal x85temp 			: std_logic_vector(outBits downto 0);
+		signal x86temp 			: std_logic_vector(outBits downto 0);
 		signal x87temp				: std_logic_vector(outBits downto 0);
 		signal x88temp				: std_logic_vector(outBits downto 0);
+		signal x89temp				: std_logic_vector(outBits downto 0);
+		signal x90temp				: std_logic_vector(outBits downto 0);
 
 		
 		function my_resize(x: std_logic_vector; new_size: integer) return std_logic_vector is
@@ -121,21 +185,26 @@ begin
 		
 		shift32x(outBits downto 5) <= x_resized(outBits - 5 downto 0); 
 		shift32x(4 downto 0) <= "00000";
+		
+		shift64x(outBits downto 6) <= x_resized(outBits - 6 downto 0); 
+		shift64x(5 downto 0) <= "000000";
 
 -------------------1ª linha de somadores e subtratores----------------		
 		
-		sub3x(outBits downto 0) <= shift4x - x_resized;
-		sub31x(outBits downto 0) <= shift32x - x_resized;
+		sub7x(outBits downto 0) <= shift8x - x_resized;
+		sub15x(outBits downto 0) <= shift16x - x_resized;
+		sub63x(outBits downto 0) <= shift64x - x_resized;
 		
-		adder5x(outBits downto 0) <= shift4x + x_resized;
+		adder9x(outBits downto 0) <= shift8x + x_resized;
 		adder17x(outBits downto 0) <= shift16x + x_resized;
 		adder33x(outBits downto 0) <= shift32x + x_resized;
-				
+	
 -------------------1ª linha de resultados----------------		
 		
-		x8temp  <= shift8x;
+		x4temp  <= shift4x;
+		x9temp  <= adder9x;
 		x17temp <= adder17x;
-		x33temp <= adder33x;
+		x63temp <= adder63x;
 		
 -------------------2ª linha de deslocadores----------------	
 
