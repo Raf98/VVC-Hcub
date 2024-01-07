@@ -17,9 +17,9 @@ entity DST7_DCT8_32x32 is
 		Nbits				:  integer := 9;
 		inBits			:  integer := 9;
 		numInOutputs	:  integer := 64;
-		outBits			:  integer := 23;
+		outBits			:  integer := 19; --19 downto 0 -> 20 bits
 		rNum				:  integer := 4;
-		numTr				:  integer := 4
+		numTr				:  integer := 2
 	);
 	port(
 		op:												 in std_logic;
@@ -86,7 +86,8 @@ architecture behavior of DST7_DCT8_32x32 is
 		
 		
 		type hcubOutputs is array( 0 to numInOutputs - 1 ) of std_logic_vector( outBits downto 0 );
-		signal x_8, x_17, x_25, x_33, x_40, x_48, x_55, x_62, x_68, x_73, x_77, x_81, x_85, x_87, x_88:	hcubOutputs;
+		signal x_4, x_9, x_13, x_17, x_21, x_26, x_30, x_34, x_38, x_42, x_46, x_50, x_53, x_56, x_60, x_63: hcubOutputs;
+		signal x_66, x_68, x_72, x_74, x_77, x_78, x_80, x_82, x_84, x_85, x_86, x_87, x_88, x_89, x_90		: hcubOutputs;
 		
 		type inputSignals is array( 0 to numInOutputs - 1 ) of std_logic_vector( inBits - 1 downto 0 );
 		signal x: inputSignals;
@@ -167,9 +168,9 @@ x(63) <= x63;
 						  
 					MCU: MCUHcub_DST7_DCT8_32x32 
 					port map(
-						x => x(i),
-						x4 => x_4(i),
-						x9 => x_9(i),
+						x 	 => x(i),
+						x4  => x_4(i),
+						x9  => x_9(i),
 						x13 => x_13(i),
 						x17 => x_17(i),
 						x21 => x_21(i),

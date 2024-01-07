@@ -13,7 +13,7 @@ use ieee.std_logic_unsigned.all;
 entity MCUHcub_DST7_DCT8_32x32 is
 generic(
 		inBits			:	integer := 9;
-		outBits			:	integer := 23
+		outBits			:	integer := 19
 );
 port (
 
@@ -64,6 +64,7 @@ architecture behavior of MCUHcub_DST7_DCT8_32x32 is
 		signal shift8x 			: std_logic_vector(outBits downto 0);
 		signal shift16x 			: std_logic_vector(outBits downto 0);
 		signal shift32x 			: std_logic_vector(outBits downto 0);
+		signal shift64x 			: std_logic_vector(outBits downto 0);
 		
 		signal sub7x				: std_logic_vector(outBits downto 0);
 		signal sub15x				: std_logic_vector(outBits downto 0);
@@ -77,27 +78,25 @@ architecture behavior of MCUHcub_DST7_DCT8_32x32 is
 		
 		-- Second row
 		signal shift14x			: std_logic_vector(outBits downto 0);
-		signal shift24x			: std_logic_vector(outBits downto 0);
+		signal shift18x			: std_logic_vector(outBits downto 0);
 		signal shift30x			: std_logic_vector(outBits downto 0);
 		signal shift34x			: std_logic_vector(outBits downto 0);
-		signal shift38x			: std_logic_vector(outBits downto 0);
+		signal shift36x			: std_logic_vector(outBits downto 0);
 		signal shift40x			: std_logic_vector(outBits downto 0);
 		signal shift42x			: std_logic_vector(outBits downto 0);
-		signal shift48x			: std_logic_vector(outBits downto 0);
-		signal shift50x			: std_logic_vector(outBits downto 0);
+		signal shift56x			: std_logic_vector(outBits downto 0);
 		signal shift60x			: std_logic_vector(outBits downto 0);
 		signal shift62x			: std_logic_vector(outBits downto 0);
 		signal shift66x			: std_logic_vector(outBits downto 0);
 		signal shift68x			: std_logic_vector(outBits downto 0);
 		signal shift72x			: std_logic_vector(outBits downto 0);
-		signal shift74x			: std_logic_vector(outBits downto 0);
 		signal shift80x			: std_logic_vector(outBits downto 0);
-		signal shift84x			: std_logic_vector(outBits downto 0);
 		
+		signal sub11x 				: std_logic_vector(outBits downto 0);
 		signal sub13x 				: std_logic_vector(outBits downto 0);
+		signal sub25x 				: std_logic_vector(outBits downto 0);
 		signal sub39x 				: std_logic_vector(outBits downto 0);
 		signal sub53x 				: std_logic_vector(outBits downto 0);
-		signal sub77x 				: std_logic_vector(outBits downto 0);
 		
 		signal adder11x 			: std_logic_vector(outBits downto 0);
 		signal adder19x 			: std_logic_vector(outBits downto 0);
@@ -107,17 +106,17 @@ architecture behavior of MCUHcub_DST7_DCT8_32x32 is
 		signal adder37x 			: std_logic_vector(outBits downto 0);
 		signal adder41x 			: std_logic_vector(outBits downto 0);
 		signal adder45x 			: std_logic_vector(outBits downto 0);
-		signal adder55x 			: std_logic_vector(outBits downto 0);
-		signal adder73x 			: std_logic_vector(outBits downto 0);
-		signal adder81x 			: std_logic_vector(outBits downto 0);
 		signal adder85x 			: std_logic_vector(outBits downto 0);
 		
 		-- Third row
+		signal shift26x			: std_logic_vector(outBits downto 0);
 		signal shift38x			: std_logic_vector(outBits downto 0);
+		signal shift46x			: std_logic_vector(outBits downto 0);
+		signal shift50x			: std_logic_vector(outBits downto 0);
 		signal shift74x			: std_logic_vector(outBits downto 0);
 		signal shift78x			: std_logic_vector(outBits downto 0);
 		signal shift82x			: std_logic_vector(outBits downto 0);
-		signal shift86x			: std_logic_vector(outBits downto 0);
+		signal shift84x			: std_logic_vector(outBits downto 0);
 		signal shift88x			: std_logic_vector(outBits downto 0);
 		signal shift90x			: std_logic_vector(outBits downto 0);
 		
@@ -126,6 +125,9 @@ architecture behavior of MCUHcub_DST7_DCT8_32x32 is
 		
 		signal sub77x 				: std_logic_vector(outBits downto 0);
 		signal sub87x 				: std_logic_vector(outBits downto 0);
+		
+		-- Fourth row
+		signal shift86x			: std_logic_vector(outBits downto 0);
 	
 		-- Ouput signals
 		signal x4temp				: std_logic_vector(outBits downto 0);
@@ -195,6 +197,7 @@ begin
 		sub15x(outBits downto 0) <= shift16x - x_resized;
 		sub63x(outBits downto 0) <= shift64x - x_resized;
 		
+		adder5x(outBits downto 0) <= shift4x + x_resized;
 		adder9x(outBits downto 0) <= shift8x + x_resized;
 		adder17x(outBits downto 0) <= shift16x + x_resized;
 		adder33x(outBits downto 0) <= shift32x + x_resized;
@@ -204,81 +207,178 @@ begin
 		x4temp  <= shift4x;
 		x9temp  <= adder9x;
 		x17temp <= adder17x;
-		x63temp <= adder63x;
+		x63temp <= sub63x;
 		
 -------------------2ª linha de deslocadores----------------	
 
-		shift24x(outBits downto 3) <= sub3x(outBits - 3 downto 0);
-		shift24x(2 downto 0) <= "000";
+		shift14x(outBits downto 1) <= sub7x(outBits - 1 downto 0);
+		shift14x(0) <= '0';
+		
+		shift18x(outBits downto 1) <= adder9x(outBits - 1 downto 0);
+		shift18x(0) <= '0';
+		
+		shift30x(outBits downto 1) <= sub15x(outBits - 1 downto 0);
+		shift30x(0) <= '0';
+		
+		shift34x(outBits downto 1) <= adder17x(outBits - 1 downto 0);
+		shift34x(0) <= '0';
+		
+		shift36x(outBits downto 2) <= adder9x(outBits - 2 downto 0);
+		shift36x(1 downto 0) <= "00";
 		
 		shift40x(outBits downto 3) <= adder5x(outBits - 3 downto 0);
 		shift40x(2 downto 0) <= "000";
 		
-		shift48x(outBits downto 4) <= sub3x(outBits - 4 downto 0);
-		shift48x(3 downto 0) <= "0000";
+		shift56x(outBits downto 3) <= sub7x(outBits - 3 downto 0);
+		shift56x(2 downto 0) <= "000";
 		
-		shift62x(outBits downto 1) <= sub31x(outBits - 1 downto 0);
-		shift62x(0) <= '0';
+		shift60x(outBits downto 2) <= sub15x(outBits - 2 downto 0);
+		shift60x(1 downto 0) <= "00";
+		
+		shift66x(outBits downto 1) <= adder33x(outBits - 1 downto 0);
+		shift66x(0) <= '0';
 		
 		shift68x(outBits downto 2) <= adder17x(outBits - 2 downto 0);
 		shift68x(1 downto 0) <= "00";
+		
+		shift72x(outBits downto 3) <= adder9x(outBits - 3 downto 0);
+		shift72x(2 downto 0) <= "000";
 		
 		shift80x(outBits downto 4) <= adder5x(outBits - 4 downto 0);
 		shift80x(3 downto 0) <= "0000";
 		
 ---------------2ª linha de subtratores e somadores----------
-			
-		sub77x(outBits downto 0) <= shift80x - sub3x;
 		
-		adder11x(outBits downto 0) <= shift8x + sub3x;
-		adder25x(outBits downto 0) <= shift24x + x_resized;
-		adder55x(outBits downto 0) <= shift24x + sub31x;
-		adder73x(outBits downto 0) <= adder5x + shift68x;
-		adder81x(outBits downto 0) <= shift80x + x_resized;
+		sub11x(outBits downto 0) <= shift16x - adder5x;
+		sub13x(outBits downto 0) <= shift14x - x_resized;
+		sub25x(outBits downto 0) <= shift32x - sub7x;
+		sub39x(outBits downto 0) <= shift40x - x_resized;
+		sub53x(outBits downto 0) <= shift60x - sub7x;
+		
+		adder19x(outBits downto 0) <= shift18x + x_resized;
+		adder21x(outBits downto 0) <= adder17x + shift4x;
+		adder23x(outBits downto 0) <= shift16x + sub7x;
+		adder37x(outBits downto 0) <= shift36x + x_resized;
+		adder41x(outBits downto 0) <= shift40x + x_resized;
+		adder45x(outBits downto 0) <= shift40x + adder5x;
 		adder85x(outBits downto 0) <= shift80x + adder5x;
 			
 -------------------2ª linha de resultados----------------		
 
-		x25temp <= adder25x;
-		x40temp <= shift40x;
-		x48temp <= shift48x;
-		x55temp <= adder55x;
-		x62temp <= shift62x;
+		x13temp <= sub13x;
+		x21temp <= adder21x;
+		x30temp <= shift30x;
+		x34temp <= shift34x;
+		x53temp <= sub53x;
+		x56temp <= shift56x;
+		x60temp <= shift60x;
+		x66temp <= shift66x;
 		x68temp <= shift68x;
-		x73temp <= adder73x;
-		x77temp <= sub77x;
-		x81temp <= adder81x;
+		x72temp <= shift72x;
+		x80temp <= shift80x;
 		x85temp <= adder85x;
 
 -------------------3ª linha de deslocadores----------------
-				
-		shift88x(outBits downto 3) <= adder11x(outBits - 3 downto 0);
+		
+		shift26x(outBits downto 1) <= sub13x(outBits - 1 downto 0);
+		shift26x(0) <= '0';
+		
+		shift38x(outBits downto 1) <= adder19x(outBits - 1 downto 0);
+		shift38x(0) <= '0';
+		
+		shift42x(outBits downto 1) <= adder21x(outBits - 1 downto 0);
+		shift42x(0) <= '0';
+		
+		shift46x(outBits downto 1) <= adder23x(outBits - 1 downto 0);
+		shift46x(0) <= '0';
+		
+		shift50x(outBits downto 1) <= sub25x(outBits - 1 downto 0);
+		shift50x(0) <= '0';
+		
+		shift74x(outBits downto 1) <= adder37x(outBits - 1 downto 0);
+		shift74x(0) <= '0';
+		
+		shift78x(outBits downto 1) <= sub39x(outBits - 1 downto 0);
+		shift78x(0) <= '0';
+		
+		shift82x(outBits downto 1) <= adder41x(outBits - 1 downto 0);
+		shift82x(0) <= '0';
+		
+		shift84x(outBits downto 2) <= adder21x(outBits - 2 downto 0);
+		shift84x(1 downto 0) <= "00";
+		
+		shift88x(outBits downto 3) <= sub11x(outBits - 3 downto 0);
 		shift88x(2 downto 0) <= "000";
+		
+		shift90x(outBits downto 1) <= adder45x(outBits - 1 downto 0);
+		shift90x(0) <= '0';
 		
 ---------------3ª linha de subtratores e somadores----------
 		
+		sub77x(outBits downto 0) <= shift78x - x_resized;
 		sub87x(outBits downto 0) <= shift88x - x_resized;
+		
+		adder43x(outBits downto 0) <= shift32x + sub11x;
+		adder89x(outBits downto 0) <= shift88x + x_resized;
 		
 -------------------3ª linha de resultados----------------		
 
+		x26temp <= shift26x;
+		x38temp <= shift38x;
+		x42temp <= shift42x;
+		x46temp <= shift46x;
+		x50temp <= shift50x;
+		x74temp <= shift74x;
+		x77temp <= sub77x;
+		x78temp <= shift78x;
+		x82temp <= shift82x;
+		x84temp <= shift84x;
 		x87temp <= sub87x;
-		x88temp <= shift88x;	
+		x88temp <= shift88x;
+		x89temp <= adder89x;
+		x90temp <= shift90x;
 		
--------------------Outputs-------------------------------		
-		x8 <= x8temp;
+-------------------4ª linha de deslocadores----------------
+
+		shift86x(outBits downto 1) <= adder43x(outBits - 1 downto 0);
+		shift86x(0) <= '0';
+
+-------------------4ª linha de resultados----------------
+		
+		x86temp <= shift86x;
+		
+-------------------Outputs-------------------------------
+
+		x4	 <= x4temp;
+		x9  <= x9temp;
+		x13 <= x13temp;
 		x17 <= x17temp;
-		x25 <= x25temp;
-		x33 <= x33temp;
-		x40 <= x40temp;
-		x48 <= x48temp;
-		x55 <= x55temp;
-		x62 <= x62temp;
+		x21 <= x21temp;
+		x26 <= x26temp;
+		x30 <= x30temp;
+		x34 <= x34temp;
+		x38 <= x38temp;
+		x42 <= x42temp;
+		x46 <= x46temp;
+		x50 <= x50temp;
+		x53 <= x53temp;
+		x56 <= x56temp;
+		x60 <= x60temp;
+		x63 <= x63temp;
+		x66 <= x66temp;
 		x68 <= x68temp;
-		x73 <= x73temp;
+		x72 <= x72temp;
+		x74 <= x74temp;
 		x77 <= x77temp;
-		x81 <= x81temp;		
+		x78 <= x78temp;
+		x80 <= x80temp;
+		x82 <= x82temp;
+		x84 <= x84temp;
 		x85 <= x85temp;
+		x86 <= x86temp;
 		x87 <= x87temp;
 		x88 <= x88temp;
+		x89 <= x89temp;
+		x90 <= x90temp;
 
 end behavior;
