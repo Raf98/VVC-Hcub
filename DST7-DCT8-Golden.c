@@ -177,31 +177,32 @@ int trCoreDST7P32[32][MAX] = DEFINE_DST7_P32_MATRIX(4,     9,    13,    17,    2
 
 #define SAMPLES 16
 #define INOUTPUTS 64
+#define MAXBITS 20
 
 void intToBinary(int n, char* str)
 {
     printf("%d\n", n);
-    short i, bin[10];
+    int i, bin[MAXBITS];
 
-    for (i = 0; i < 10; i++){
+    for (i = 0; i < MAXBITS; i++){
         bin[i] = ((unsigned int)n >> i) & 1;
     }
 
-    char binDigit[2];
-    for(short j = 0, i = 9; j < 10; j++, i--){
+    for(int j = 0, i = MAXBITS - 1; j < MAXBITS; j++, i--){
         str[j] = (char) bin[i] + 48;
     }
 }
 
 void generateEntry(FILE* filePointer, int matrix[SAMPLES][INOUTPUTS], int i, int j, int maxBit) {
-    char str[11];
+    char str[MAXBITS + 1];
     //itoa(matrix[i][j], str, 2);
     printf("ENTERING FUNC...\n");
     intToBinary(matrix[i][j], str);
-    char newStr[10];
+    char newStr[MAXBITS];
     strcpy(newStr, "");
 
     printf("STR: %s\n", str);
+    printf("STR: %d\n", (int) strlen(str));
     //printf("SIZE: %d\n", (strlen(str)));
     if(strlen(str) == maxBit) {
         printf("EQUAL\n");
@@ -228,11 +229,11 @@ void generateFile(char* fileName, int matrix[SAMPLES][INOUTPUTS], int maxBit) {
 
 	for (int i = 0; i < SAMPLES; i++) {
         //printf("%d\n", i);
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < INOUTPUTS; j++) {
             //printf("%d\n", j);
             generateEntry(filePointer, matrix, i, j, maxBit);
         }
-        if( i != SAMPLES - 1) fputs("\n", filePointer);
+        if(i != SAMPLES - 1) fputs("\n", filePointer);
 	}
 
 	fclose(filePointer);
@@ -250,7 +251,7 @@ void generateFileDec(char* fileName, int matrix[SAMPLES][INOUTPUTS]) {
     FILE* filePointer = fopen(fileName,"w");
 
 	for (int i = 0; i < SAMPLES; i++) {
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < INOUTPUTS; j++) {
             printf("%d %d %d\n", i, j, matrix[i][j]);
             generateEntryDec(filePointer, matrix, i, j);
         }
@@ -267,8 +268,14 @@ int main(int argc, char const *argv[])
     int s[SAMPLES][INOUTPUTS];
 
     int x[SAMPLES][INOUTPUTS];
-    int y_dct[SAMPLES][INOUTPUTS];
-    int y_dst[SAMPLES][INOUTPUTS];
+    int y_dct_4x4  [SAMPLES][INOUTPUTS];
+    int y_dst_4x4  [SAMPLES][INOUTPUTS];
+    int y_dct_8x8  [SAMPLES][INOUTPUTS];
+    int y_dst_8x8  [SAMPLES][INOUTPUTS];
+    int y_dct_16x16[SAMPLES][INOUTPUTS];
+    int y_dst_16x16[SAMPLES][INOUTPUTS];
+    int y_dct_32x32[SAMPLES][INOUTPUTS];
+    int y_dst_32x32[SAMPLES][INOUTPUTS];
 
     srand(time(NULL));
 
@@ -297,12 +304,12 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < SAMPLES; i++) {
         for (int j = 0; j < INOUTPUTS / 4; j++) {
             for (int k = 0; k < 4; k++) {
-                y_dct[i][j*4 + k] = 0;
+                y_dct_4x4[i][j*4 + k] = 0;
                 for (int l = 0; l < 4; l++) {
-                    y_dct[i][j*4 + k] += x[i][j*4 + l] * trCoreDCT8P4[l][k];
+                    y_dct_4x4[i][j*4 + k] += x[i][j*4 + l] * trCoreDCT8P4[l][k];
                     printf("%d\t", trCoreDCT8P4[l][k]);
                 }
-                printf("\n%d; %d; %d : %d\n", i, j, k, y_dct[i][j*4 + k]);
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dct_4x4[i][j*4 + k]);
             }
 
             /*y_dct[i][j*4 + 0] = x_84[i][j*4 + 0] + x_74[i][j*4 + 1] + x_55[i][j*4 + 2] + x_29[i][j*4 + 3];
@@ -315,12 +322,12 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < SAMPLES; i++) {
         for (int j = 0; j < INOUTPUTS / 4; j++) {
             for (int k = 0; k < 4; k++) {
-                y_dst[i][j*4 + k] = 0;
+                y_dst_4x4[i][j*4 + k] = 0;
                 for (int l = 0; l < 4; l++) {
-                    y_dst[i][j*4 + k] += x[i][j*4 + l] * trCoreDST7P4[l][k];
+                    y_dst_4x4[i][j*4 + k] += x[i][j*4 + l] * trCoreDST7P4[l][k];
                     printf("%d\t", trCoreDST7P4[l][k]);
                 }
-                printf("\n%d; %d; %d : %d\n", i, j, k, y_dst[i][j*4 + k]);
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dst_4x4[i][j*4 + k]);
             }
         }
     }
@@ -328,12 +335,12 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < SAMPLES; i++) {
         for (int j = 0; j < INOUTPUTS / 8; j++) {
             for (int k = 0; k < 8; k++) {
-                y_dct[i][j*8 + k] = 0;
+                y_dct_8x8[i][j*8 + k] = 0;
                 for (int l = 0; l < 8; l++) {
-                    y_dct[i][j*8 + k] += x[i][j*8 + l] * trCoreDCT8P8[l][k];
+                    y_dct_8x8[i][j*8 + k] += x[i][j*8 + l] * trCoreDCT8P8[l][k];
                     printf("%d\t", trCoreDCT8P8[l][k]);
                 }
-                printf("\n%d; %d; %d : %d\n", i, j, k, y_dct[i][j*8 + k]);
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dct_8x8[i][j*8 + k]);
             }
         }
     }
@@ -341,12 +348,12 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < SAMPLES; i++) {
         for (int j = 0; j < INOUTPUTS / 8; j++) {
             for (int k = 0; k < 8; k++) {
-                y_dst[i][j*8 + k] = 0;
+                y_dst_8x8[i][j*8 + k] = 0;
                 for (int l = 0; l < 8; l++) {
-                    y_dst[i][j*8 + k] += x[i][j*8 + l] * trCoreDST7P8[l][k];
+                    y_dst_8x8[i][j*8 + k] += x[i][j*8 + l] * trCoreDST7P8[l][k];
                     printf("%d\t", trCoreDST7P8[l][k]);
                 }
-                printf("\n%d; %d; %d : %d\n", i, j, k, y_dst[i][j*8 + k]);
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dst_8x8[i][j*8 + k]);
             }
         }
     }
@@ -354,12 +361,12 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < SAMPLES; i++) {
         for (int j = 0; j < INOUTPUTS / 16; j++) {
             for (int k = 0; k < 16; k++) {
-                y_dct[i][j*16 + k] = 0;
+                y_dct_16x16[i][j*16 + k] = 0;
                 for (int l = 0; l < 16; l++) {
-                    y_dct[i][j*16 + k] += x[i][j*16 + l] * trCoreDCT8P16[l][k];
+                    y_dct_16x16[i][j*16 + k] += x[i][j*16 + l] * trCoreDCT8P16[l][k];
                     printf("%d\t", trCoreDCT8P16[l][k]);
                 }
-                printf("\n%d; %d; %d : %d\n", i, j, k, y_dct[i][j*16 + k]);
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dct_16x16[i][j*16 + k]);
             }
         }
     }
@@ -367,12 +374,12 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < SAMPLES; i++) {
         for (int j = 0; j < INOUTPUTS / 16; j++) {
             for (int k = 0; k < 16; k++) {
-                y_dst[i][j*16 + k] = 0;
+                y_dst_16x16[i][j*16 + k] = 0;
                 for (int l = 0; l < 16; l++) {
-                    y_dst[i][j*16 + k] += x[i][j*16 + l] * trCoreDST7P16[l][k];
+                    y_dst_16x16[i][j*16 + k] += x[i][j*16 + l] * trCoreDST7P16[l][k];
                     printf("%d\t", trCoreDST7P16[l][k]);
                 }
-                printf("\n%d; %d; %d : %d\n", i, j, k, y_dst[i][j*16 + k]);
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dst_16x16[i][j*16 + k]);
             }
         }
     }
@@ -380,12 +387,12 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < SAMPLES; i++) {
         for (int j = 0; j < INOUTPUTS / 32; j++) {
             for (int k = 0; k < 32; k++) {
-                y_dct[i][j*32 + k] = 0;
+                y_dct_32x32[i][j*32 + k] = 0;
                 for (int l = 0; l < 32; l++) {
-                    y_dct[i][j*32 + k] += x[i][j*32 + l] * trCoreDCT8P32[l][k];
+                    y_dct_32x32[i][j*32 + k] += x[i][j*32 + l] * trCoreDCT8P32[l][k];
                     printf("%d\t", trCoreDCT8P32[l][k]);
                 }
-                printf("\n%d; %d; %d : %d\n", i, j, k, y_dct[i][j*32 + k]);
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dct_32x32[i][j*32 + k]);
             }
         }
     }
@@ -393,17 +400,43 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < SAMPLES; i++) {
         for (int j = 0; j < INOUTPUTS / 32; j++) {
             for (int k = 0; k < 32; k++) {
-                y_dst[i][j*32 + k] = 0;
+                y_dst_32x32[i][j*32 + k] = 0;
                 for (int l = 0; l < 32; l++) {
-                    y_dst[i][j*32 + k] += x[i][j*32 + l] * trCoreDST7P32[l][k];
+                    y_dst_32x32[i][j*32 + k] += x[i][j*32 + l] * trCoreDST7P32[l][k];
                     printf("%d\t", trCoreDST7P32[l][k]);
                 }
-                printf("\n%d; %d; %d : %d\n", i, j, k, y_dst[i][j*32 + k]);
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dst_32x32[i][j*32 + k]);
             }
         }
     }
 
+    generateFile("DST7-DCT8_input.txt", x, 9);
 
+    generateFile("DCT8_4x4_output.txt", y_dct_4x4, 16);
+    generateFile("DST7_4x4_output.txt", y_dst_4x4, 16);
+
+    generateFile("DCT8_8x8_output.txt", y_dct_8x8, 18);
+    generateFile("DST7_8x8_output.txt", y_dst_8x8, 18);
+
+    generateFile("DCT8_16x16_output.txt", y_dct_16x16, 20);
+    generateFile("DST7_16x16_output.txt", y_dst_16x16, 20);
+
+    generateFile("DCT8_32x32_output.txt", y_dct_32x32, 20);
+    generateFile("DST7_32x32_output.txt", y_dst_32x32, 20);
+
+    generateFileDec("DST7-DCT8_input_dec.txt", x);
+
+    generateFileDec("DCT8_4x4_output_dec.txt", y_dct_4x4);
+    generateFileDec("DST7_4x4_output_dec.txt", y_dst_4x4);
+
+    generateFileDec("DCT8_8x8_output_dec.txt", y_dct_8x8);
+    generateFileDec("DST7_8x8_output_dec.txt", y_dst_8x8);
+
+    generateFileDec("DCT8_16x16_output_dec.txt", y_dct_16x16);
+    generateFileDec("DST7_16x16_output_dec.txt", y_dst_16x16);
+
+    generateFileDec("DCT8_32x32_output_dec.txt", y_dct_32x32);
+    generateFileDec("DST7_32x32_output_dec.txt", y_dst_32x32);
 
     /*int x_86[SAMPLES][64], x_85[SAMPLES][64], x_78[SAMPLES][64], x_71[SAMPLES][64];
     int x_60[SAMPLES][64], x_46[SAMPLES][64], x_32[SAMPLES][64], x_17[SAMPLES][64];
@@ -559,32 +592,6 @@ int main(int argc, char const *argv[])
 			y_dct[i][j*32 + 30] = x_9 [i][j*32 + 0] - x_26[i][i*32 + 1] + x_42[i][j*32 + 2] - x_56[i][j*32 + 3] + x_68[i][j*32 + 4] - x_78[i][j*32 + 5] + x_85[i][j*32 + 6] - x_89[i][j*32 + 7] + x_90[i][j*32 +  8] - x_86[i][j*32 +  9] + x_80[i][j*32 + 10] - x_72[i][j*32 + 11] + x_60[i][j*32 + 12] - x_46[i][j*32 + 13] + x_30[i][j*32 + 14] - x_13[i][j*32 + 15] - x_4 [i][j*32 + 16] + x_21[i][j*32 + 17] - x_38[i][j*32 + 18] + x_53[i][j*32 + 19] - x_66[i][j*32 + 20] + x_77[i][j*32 + 21] - x_84[i][j*32 + 22] + x_88[i][j*32 + 23] - x_90[i][j*32 + 24] + x_87[i][j*32 + 25] - x_82[i][j*32 + 26] + x_74[i][j*32 + 27] - x_63[i][j*32 + 28] + x_50[i][j*32 + 29] - x_34(i*32 + 30) + x_17(i*32 + 31);
 			y_dct[i][j*32 + 31] = x_4 [i][j*32 + 0] - x_13[i][i*32 + 1] + x_21[i][j*32 + 2] - x_30[i][j*32 + 3] + x_38[i][j*32 + 4] - x_46[i][j*32 + 5] + x_53[i][j*32 + 6] - x_60[i][j*32 + 7] + x_66[i][j*32 +  8] - x_72[i][j*32 +  9] + x_77[i][j*32 + 10] - x_80[i][j*32 + 11] + x_84[i][j*32 + 12] - x_86[i][j*32 + 13] + x_88[i][j*32 + 14] - x_90[i][j*32 + 15] + x_90[i][j*32 + 16] - x_89[i][j*32 + 17] + x_87[i][j*32 + 18] - x_85[i][j*32 + 19] + x_82[i][j*32 + 20] - x_78[i][j*32 + 21] + x_74[i][j*32 + 22] - x_68[i][j*32 + 23] + x_63[i][j*32 + 24] - x_56[i][j*32 + 25] + x_50[i][j*32 + 26] - x_42[i][j*32 + 27] + x_34[i][j*32 + 28] - x_26[i][j*32 + 29] + x_17(i*32 + 30) - x_9 (i*32 + 31);
     }
-    */
-    for(int i = 0; i < SAMPLES; i++) {
-        //printf("%d\n", i);
-        w[i][0] = rand() % 256 - (rand() % 256);
-        w[i][1] = rand() % 256 - (rand() % 256);
-        w[i][2] = rand() % 256 - (rand() % 256);
-        w[i][3] = rand() % 256 - (rand() % 256);
-
-        a[0] = w[i][0] + w[i][2];
-        a[1] = w[i][1] + w[i][3];
-        a[2] = w[i][0] - w[i][2];
-        a[3] = w[i][1] - w[i][3];
-
-        s[i][0] = (a[0] + a[1]); //>> 1;
-        s[i][1] = (a[0] - a[1]); //>> 1;
-        s[i][2] = (a[2] + a[3]); //>> 1;
-        s[i][3] = (a[2] - a[3]); //>> 1;
-    }
-
-    /*
-    generateFile("8x8_input.txt", w, 9);
-    generateFile("8x8_output.txt", s, 17);
-
-    generateFileDec("8x8_input_dec.txt", w);
-    printf("OUT DEC...\n");
-    generateFileDec("8x8_output_dec.txt", s);
     */
 
     return 0;
