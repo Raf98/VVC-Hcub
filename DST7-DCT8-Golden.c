@@ -193,7 +193,7 @@ void intToBinary(int n, char* str)
     }
 }
 
-void generateEntry(FILE* filePointer, int matrix[SAMPLES][4], int i, int j, int maxBit) {
+void generateEntry(FILE* filePointer, int matrix[SAMPLES][INOUTPUTS], int i, int j, int maxBit) {
     char str[11];
     //itoa(matrix[i][j], str, 2);
     printf("ENTERING FUNC...\n");
@@ -223,7 +223,7 @@ void generateEntry(FILE* filePointer, int matrix[SAMPLES][4], int i, int j, int 
     fputs(newStr, filePointer);
 }
 
-void generateFile(char* fileName, int matrix[SAMPLES][4], int maxBit) {
+void generateFile(char* fileName, int matrix[SAMPLES][INOUTPUTS], int maxBit) {
     FILE* filePointer = fopen(fileName,"w");
 
 	for (int i = 0; i < SAMPLES; i++) {
@@ -238,7 +238,7 @@ void generateFile(char* fileName, int matrix[SAMPLES][4], int maxBit) {
 	fclose(filePointer);
 }
 
-void generateEntryDec(FILE* filePointer, int matrix[SAMPLES][4], int i, int j) {
+void generateEntryDec(FILE* filePointer, int matrix[SAMPLES][INOUTPUTS], int i, int j) {
     char str[10];
     sprintf(str, "%d", matrix[i][j]);
     //itoa(matrix[i][j], str, 10);
@@ -246,7 +246,7 @@ void generateEntryDec(FILE* filePointer, int matrix[SAMPLES][4], int i, int j) {
     fputs(str, filePointer);
 }
 
-void generateFileDec(char* fileName, int matrix[SAMPLES][4]) {
+void generateFileDec(char* fileName, int matrix[SAMPLES][INOUTPUTS]) {
     FILE* filePointer = fopen(fileName,"w");
 
 	for (int i = 0; i < SAMPLES; i++) {
@@ -328,7 +328,7 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < SAMPLES; i++) {
         for (int j = 0; j < INOUTPUTS / 8; j++) {
             for (int k = 0; k < 8; k++) {
-                y_dct[i][j*4 + k] = 0;
+                y_dct[i][j*8 + k] = 0;
                 for (int l = 0; l < 8; l++) {
                     y_dct[i][j*8 + k] += x[i][j*8 + l] * trCoreDCT8P8[l][k];
                     printf("%d\t", trCoreDCT8P8[l][k]);
@@ -350,6 +350,59 @@ int main(int argc, char const *argv[])
             }
         }
     }
+
+    for (int i = 0; i < SAMPLES; i++) {
+        for (int j = 0; j < INOUTPUTS / 16; j++) {
+            for (int k = 0; k < 16; k++) {
+                y_dct[i][j*16 + k] = 0;
+                for (int l = 0; l < 16; l++) {
+                    y_dct[i][j*16 + k] += x[i][j*16 + l] * trCoreDCT8P16[l][k];
+                    printf("%d\t", trCoreDCT8P16[l][k]);
+                }
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dct[i][j*16 + k]);
+            }
+        }
+    }
+
+    for (int i = 0; i < SAMPLES; i++) {
+        for (int j = 0; j < INOUTPUTS / 16; j++) {
+            for (int k = 0; k < 16; k++) {
+                y_dst[i][j*16 + k] = 0;
+                for (int l = 0; l < 16; l++) {
+                    y_dst[i][j*16 + k] += x[i][j*16 + l] * trCoreDST7P16[l][k];
+                    printf("%d\t", trCoreDST7P16[l][k]);
+                }
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dst[i][j*16 + k]);
+            }
+        }
+    }
+
+    for (int i = 0; i < SAMPLES; i++) {
+        for (int j = 0; j < INOUTPUTS / 32; j++) {
+            for (int k = 0; k < 32; k++) {
+                y_dct[i][j*32 + k] = 0;
+                for (int l = 0; l < 32; l++) {
+                    y_dct[i][j*32 + k] += x[i][j*32 + l] * trCoreDCT8P32[l][k];
+                    printf("%d\t", trCoreDCT8P32[l][k]);
+                }
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dct[i][j*32 + k]);
+            }
+        }
+    }
+
+    for (int i = 0; i < SAMPLES; i++) {
+        for (int j = 0; j < INOUTPUTS / 32; j++) {
+            for (int k = 0; k < 32; k++) {
+                y_dst[i][j*32 + k] = 0;
+                for (int l = 0; l < 32; l++) {
+                    y_dst[i][j*32 + k] += x[i][j*32 + l] * trCoreDST7P32[l][k];
+                    printf("%d\t", trCoreDST7P32[l][k]);
+                }
+                printf("\n%d; %d; %d : %d\n", i, j, k, y_dst[i][j*32 + k]);
+            }
+        }
+    }
+
 
 
     /*int x_86[SAMPLES][64], x_85[SAMPLES][64], x_78[SAMPLES][64], x_71[SAMPLES][64];
