@@ -2,9 +2,12 @@ VVC-DST-DCT
 DST7-DCT8-Golden
 *.exe
 
+Testbench*/*
+
 *.vhd.bak
 *.vht.bak
 *.qws
+*.rpt
 db
 incremental_db
 output_files
