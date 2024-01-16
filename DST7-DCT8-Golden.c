@@ -177,7 +177,7 @@ int trCoreDST7P32[32][MAX] = DEFINE_DST7_P32_MATRIX(4,     9,    13,    17,    2
 
 #define SAMPLES 16
 #define INOUTPUTS 64
-#define MAXBITS 20
+#define MAXBITS 22
 
 void intToBinary(int n, char* str)
 {
@@ -412,17 +412,17 @@ int main(int argc, char const *argv[])
 
     generateFile("DST7-DCT8_input.txt", x, 9);
 
-    generateFile("DCT8_4x4_output.txt", y_dct_4x4, 16);
-    generateFile("DST7_4x4_output.txt", y_dst_4x4, 16);
+    generateFile("DCT8_4x4_output_exp.txt", y_dct_4x4, 16);
+    generateFile("DST7_4x4_output_exp.txt", y_dst_4x4, 16);
 
-    generateFile("DCT8_8x8_output.txt", y_dct_8x8, 18);
-    generateFile("DST7_8x8_output.txt", y_dst_8x8, 18);
+    generateFile("DCT8_8x8_output_exp.txt", y_dct_8x8, 18);
+    generateFile("DST7_8x8_output_exp.txt", y_dst_8x8, 18);
 
-    generateFile("DCT8_16x16_output.txt", y_dct_16x16, 20);
-    generateFile("DST7_16x16_output.txt", y_dst_16x16, 20);
+    generateFile("DCT8_16x16_output_exp.txt", y_dct_16x16, 20);
+    generateFile("DST7_16x16_output_exp.txt", y_dst_16x16, 20);
 
-    generateFile("DCT8_32x32_output.txt", y_dct_32x32, 20);
-    generateFile("DST7_32x32_output.txt", y_dst_32x32, 20);
+    generateFile("DCT8_32x32_output_exp.txt", y_dct_32x32, 20);
+    generateFile("DST7_32x32_output_exp.txt", y_dst_32x32, 20);
 
     generateFileDec("DST7-DCT8_input_dec.txt", x);
 

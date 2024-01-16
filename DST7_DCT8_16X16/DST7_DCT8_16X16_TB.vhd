@@ -169,6 +169,72 @@ SIGNAL y60 : STD_LOGIC_VECTOR(19 DOWNTO 0);
 SIGNAL y61 : STD_LOGIC_VECTOR(19 DOWNTO 0);
 SIGNAL y62 : STD_LOGIC_VECTOR(19 DOWNTO 0);
 SIGNAL y63 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+
+SIGNAL y_exp0 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp1 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp2 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp3 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp4 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp5 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp6 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp7 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp8 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp9 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp10 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp11 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp12 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp13 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp14 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp15 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp16 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp17 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp18 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp19 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp20 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp21 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp22 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp23 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp24 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp25 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp26 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp27 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp28 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp29 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp30 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp31 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp32 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp33 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp34 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp35 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp36 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp37 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp38 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp39 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp40 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp41 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp42 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp43 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp44 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp45 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp46 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp47 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp48 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp49 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp50 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp51 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp52 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp53 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp54 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp55 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp56 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp57 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp58 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp59 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp60 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp61 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp62 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+SIGNAL y_exp63 : STD_LOGIC_VECTOR(19 DOWNTO 0);
+
 COMPONENT DST7_DCT8_16x16
 	PORT (
 	op : IN STD_LOGIC := '0';
@@ -356,7 +422,7 @@ procedure assign_output (variable outline: inout line;
 	end procedure assign_output;
 	
 	
-	file input, output_dct, output_dst: text;
+	file input, output_dct_exp, output_dst_exp, output_dct, output_dst: text;
 	
 
 BEGIN
@@ -525,11 +591,16 @@ stimulus_in: process
 	variable outline: line;	
 		--
 	variable num_in: string(9 downto 1);
+	variable num_out_exp: string(20 downto 1);
 	variable blank: string(2 downto 1);
 	
     begin
     
 		FILE_OPEN(input, "DST7-DCT8_input.txt", READ_MODE);
+
+		FILE_OPEN(output_dct_exp, "DCT8_16x16_output_exp.txt", READ_MODE);
+		FILE_OPEN(output_dst_exp, "DST7_16x16_output_exp.txt", READ_MODE);
+
 		FILE_OPEN(output_dct, "DCT8_16x16_output.txt", WRITE_MODE);
 		FILE_OPEN(output_dst, "DST7_16x16_output.txt", WRITE_MODE);
 
@@ -609,6 +680,73 @@ stimulus_in: process
 			assign_input(inline, num_in, x62, blank); 
 			assign_input(inline, num_in, x63, blank); 
 
+
+			--READING EXPECTED DCT8 OUTPUTS TO COMPARE
+			readline(output_dct_exp, inline);
+			assign_input(inline, num_out_exp, y_exp0 , blank); 
+			assign_input(inline, num_out_exp, y_exp1 , blank); 
+			assign_input(inline, num_out_exp, y_exp2 , blank); 
+			assign_input(inline, num_out_exp, y_exp3 , blank); 
+			assign_input(inline, num_out_exp, y_exp4 , blank); 
+			assign_input(inline, num_out_exp, y_exp5 , blank); 
+			assign_input(inline, num_out_exp, y_exp6 , blank); 
+			assign_input(inline, num_out_exp, y_exp7 , blank); 
+			assign_input(inline, num_out_exp, y_exp8 , blank); 
+			assign_input(inline, num_out_exp, y_exp9 , blank); 
+			assign_input(inline, num_out_exp, y_exp10, blank); 
+			assign_input(inline, num_out_exp, y_exp11, blank); 
+			assign_input(inline, num_out_exp, y_exp12, blank); 
+			assign_input(inline, num_out_exp, y_exp13, blank); 
+			assign_input(inline, num_out_exp, y_exp14, blank); 
+			assign_input(inline, num_out_exp, y_exp15, blank); 
+			assign_input(inline, num_out_exp, y_exp16, blank); 
+			assign_input(inline, num_out_exp, y_exp17, blank); 
+			assign_input(inline, num_out_exp, y_exp18, blank); 
+			assign_input(inline, num_out_exp, y_exp19, blank); 
+			assign_input(inline, num_out_exp, y_exp20, blank); 
+			assign_input(inline, num_out_exp, y_exp21, blank); 
+			assign_input(inline, num_out_exp, y_exp22, blank); 
+			assign_input(inline, num_out_exp, y_exp23, blank); 
+			assign_input(inline, num_out_exp, y_exp24, blank); 
+			assign_input(inline, num_out_exp, y_exp25, blank); 
+			assign_input(inline, num_out_exp, y_exp26, blank); 
+			assign_input(inline, num_out_exp, y_exp27, blank); 
+			assign_input(inline, num_out_exp, y_exp28, blank); 
+			assign_input(inline, num_out_exp, y_exp29, blank); 
+			assign_input(inline, num_out_exp, y_exp30, blank); 
+			assign_input(inline, num_out_exp, y_exp31, blank); 
+			assign_input(inline, num_out_exp, y_exp32, blank); 
+			assign_input(inline, num_out_exp, y_exp33, blank); 
+			assign_input(inline, num_out_exp, y_exp34, blank); 
+			assign_input(inline, num_out_exp, y_exp35, blank); 
+			assign_input(inline, num_out_exp, y_exp36, blank); 
+			assign_input(inline, num_out_exp, y_exp37, blank); 
+			assign_input(inline, num_out_exp, y_exp38, blank); 
+			assign_input(inline, num_out_exp, y_exp39, blank); 
+			assign_input(inline, num_out_exp, y_exp40, blank); 
+			assign_input(inline, num_out_exp, y_exp41, blank); 
+			assign_input(inline, num_out_exp, y_exp42, blank); 
+			assign_input(inline, num_out_exp, y_exp43, blank); 
+			assign_input(inline, num_out_exp, y_exp44, blank); 
+			assign_input(inline, num_out_exp, y_exp45, blank); 
+			assign_input(inline, num_out_exp, y_exp46, blank); 
+			assign_input(inline, num_out_exp, y_exp47, blank); 
+			assign_input(inline, num_out_exp, y_exp48, blank); 
+			assign_input(inline, num_out_exp, y_exp49, blank); 
+			assign_input(inline, num_out_exp, y_exp50, blank); 
+			assign_input(inline, num_out_exp, y_exp51, blank); 
+			assign_input(inline, num_out_exp, y_exp52, blank); 
+			assign_input(inline, num_out_exp, y_exp53, blank); 
+			assign_input(inline, num_out_exp, y_exp54, blank); 
+			assign_input(inline, num_out_exp, y_exp55, blank); 
+			assign_input(inline, num_out_exp, y_exp56, blank); 
+			assign_input(inline, num_out_exp, y_exp57, blank); 
+			assign_input(inline, num_out_exp, y_exp58, blank); 
+			assign_input(inline, num_out_exp, y_exp59, blank); 
+			assign_input(inline, num_out_exp, y_exp60, blank); 
+			assign_input(inline, num_out_exp, y_exp61, blank); 
+			assign_input(inline, num_out_exp, y_exp62, blank); 
+			assign_input(inline, num_out_exp, y_exp63, blank);
 			
 			wait until(clk'event and clk = '1');
 			--wait until(clk'event and clk = '1');
@@ -687,6 +825,73 @@ stimulus_in: process
 			
 			
 			op <= '1';
+
+			--READING EXPECTED DST7 OUTPUTS TO COMPARE
+			readline(output_dst_exp, inline);
+			assign_input(inline, num_out_exp, y_exp0 , blank); 
+			assign_input(inline, num_out_exp, y_exp1 , blank); 
+			assign_input(inline, num_out_exp, y_exp2 , blank); 
+			assign_input(inline, num_out_exp, y_exp3 , blank); 
+			assign_input(inline, num_out_exp, y_exp4 , blank); 
+			assign_input(inline, num_out_exp, y_exp5 , blank); 
+			assign_input(inline, num_out_exp, y_exp6 , blank); 
+			assign_input(inline, num_out_exp, y_exp7 , blank); 
+			assign_input(inline, num_out_exp, y_exp8 , blank); 
+			assign_input(inline, num_out_exp, y_exp9 , blank); 
+			assign_input(inline, num_out_exp, y_exp10, blank); 
+			assign_input(inline, num_out_exp, y_exp11, blank); 
+			assign_input(inline, num_out_exp, y_exp12, blank); 
+			assign_input(inline, num_out_exp, y_exp13, blank); 
+			assign_input(inline, num_out_exp, y_exp14, blank); 
+			assign_input(inline, num_out_exp, y_exp15, blank); 
+			assign_input(inline, num_out_exp, y_exp16, blank); 
+			assign_input(inline, num_out_exp, y_exp17, blank); 
+			assign_input(inline, num_out_exp, y_exp18, blank); 
+			assign_input(inline, num_out_exp, y_exp19, blank); 
+			assign_input(inline, num_out_exp, y_exp20, blank); 
+			assign_input(inline, num_out_exp, y_exp21, blank); 
+			assign_input(inline, num_out_exp, y_exp22, blank); 
+			assign_input(inline, num_out_exp, y_exp23, blank); 
+			assign_input(inline, num_out_exp, y_exp24, blank); 
+			assign_input(inline, num_out_exp, y_exp25, blank); 
+			assign_input(inline, num_out_exp, y_exp26, blank); 
+			assign_input(inline, num_out_exp, y_exp27, blank); 
+			assign_input(inline, num_out_exp, y_exp28, blank); 
+			assign_input(inline, num_out_exp, y_exp29, blank); 
+			assign_input(inline, num_out_exp, y_exp30, blank); 
+			assign_input(inline, num_out_exp, y_exp31, blank); 
+			assign_input(inline, num_out_exp, y_exp32, blank); 
+			assign_input(inline, num_out_exp, y_exp33, blank); 
+			assign_input(inline, num_out_exp, y_exp34, blank); 
+			assign_input(inline, num_out_exp, y_exp35, blank); 
+			assign_input(inline, num_out_exp, y_exp36, blank); 
+			assign_input(inline, num_out_exp, y_exp37, blank); 
+			assign_input(inline, num_out_exp, y_exp38, blank); 
+			assign_input(inline, num_out_exp, y_exp39, blank); 
+			assign_input(inline, num_out_exp, y_exp40, blank); 
+			assign_input(inline, num_out_exp, y_exp41, blank); 
+			assign_input(inline, num_out_exp, y_exp42, blank); 
+			assign_input(inline, num_out_exp, y_exp43, blank); 
+			assign_input(inline, num_out_exp, y_exp44, blank); 
+			assign_input(inline, num_out_exp, y_exp45, blank); 
+			assign_input(inline, num_out_exp, y_exp46, blank); 
+			assign_input(inline, num_out_exp, y_exp47, blank); 
+			assign_input(inline, num_out_exp, y_exp48, blank); 
+			assign_input(inline, num_out_exp, y_exp49, blank); 
+			assign_input(inline, num_out_exp, y_exp50, blank); 
+			assign_input(inline, num_out_exp, y_exp51, blank); 
+			assign_input(inline, num_out_exp, y_exp52, blank); 
+			assign_input(inline, num_out_exp, y_exp53, blank); 
+			assign_input(inline, num_out_exp, y_exp54, blank); 
+			assign_input(inline, num_out_exp, y_exp55, blank); 
+			assign_input(inline, num_out_exp, y_exp56, blank); 
+			assign_input(inline, num_out_exp, y_exp57, blank); 
+			assign_input(inline, num_out_exp, y_exp58, blank); 
+			assign_input(inline, num_out_exp, y_exp59, blank); 
+			assign_input(inline, num_out_exp, y_exp60, blank); 
+			assign_input(inline, num_out_exp, y_exp61, blank); 
+			assign_input(inline, num_out_exp, y_exp62, blank); 
+			assign_input(inline, num_out_exp, y_exp63, blank);
 			
 			wait until(clk'event and clk = '1');
 			
