@@ -1,0 +1,7 @@
+Geração de arquivos de chaveamento .vcd para cada arquitetura implementada: 
+
+irun -64 -v93 -top worklib.DST7_DCT8_8x8_TB  ../DST7_DCT8_8x8/*.vhd ../testbenchs/DST7_DCT8_8x8_TB.vhd -input ../testbenchs/8x8_vcd.tcl -access +rw
+
+irun -64 -v93 -top worklib.DST7_DCT8_16x16_TB   ../DST7_DCT8_16x16/*.vhd ../testbenchs/DST7_DCT8_16x16_TB.vhd -access +rw -input ../testbenchs/16x16_vcd.tcl -access +rw
+
+irun -64 -v93 -top worklib.DST7_DCT8_32x32_TB ../DST7_DCT8_32x32/*.vhd ../testbenchs/DST7_DCT8_32x32_TB.vhd -input ../testbenchs/32x32_vcd.tcl -access +rw 

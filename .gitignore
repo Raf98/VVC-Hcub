@@ -12,7 +12,16 @@ db
 incremental_db
 output_files
 simulation
+*/logs*
+ASIC-VVC-HCub/scripts/outputs*
+ASIC-VVC-HCub/scripts/reports*
+ASIC-VVC-HCub/scripts/fv
+ASIC-VVC-HCub/scripts/libscore_work
+*INCA_libs
+*.log*
+*.key
 *.exe
 *.png
 *.jpg
 *.pdf
+*.zip
