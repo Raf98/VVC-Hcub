@@ -309,6 +309,70 @@ void printOutputsOperations (int n, int trCore[][32], bool dct) {
   //printf("%s\n", inputs);
 }
 
+void printComposedOutputsOperations (int n, int trCoreDCT[][32], int trCoreDST[][32]) {
+  char str[1200];
+  char inputs[10];
+  char numberStr[8];
+  
+  strcpy(inputs, "");
+  
+  for (int j = 0; j < n; ++j) {
+
+    strcpy(str, "\t\t\t\t\t\twith op select\n");
+    
+    strcat(str, "\t\t\t\t\t\ty");
+    strcat(str, "(i*");
+    sprintf(numberStr, "%d", n);
+    strcat(str, numberStr);
+    strcat(str, " + ");
+    sprintf(numberStr, "%d", j);
+    strcat(str, numberStr);
+    strcat(str, ") <= ");
+
+    if (j < 10) {
+      strcat(str, " ");
+    } 
+    
+    if (n <= 8) {
+      strcat(str, " ");
+    }
+    
+    
+    
+    for (int i = 0; i < n; i++) {
+      if ( i > 0 && trCoreDCT[i][j] > 0 ) {
+        strcat(str, " + ");
+      } else if ( trCoreDCT[i][j] < 0 ) {
+        strcat(str, " - ");
+      } else if ( trCoreDCT[i][j] == 0 ) {
+        continue;
+      }
+  
+      concatInput(str, numberStr, i, trCoreDCT[i][j], n);
+    }
+    strcat(str, " when '0',\n");
+
+    strcat(str, "\t\t\t\t\t\t\t\t\t\t");
+
+    for (int i = 0; i < n; i++) {
+      if ( i > 0 && trCoreDST[i][j] > 0 ) {
+        strcat(str, " + ");
+      } else if ( trCoreDST[i][j] < 0 ) {
+        strcat(str, " - ");
+      } else if ( trCoreDST[i][j] == 0 ) {
+        continue;
+      }
+  
+      concatInput(str, numberStr, i, trCoreDST[i][j], n);
+    }
+    strcat(str, " when others;\n");
+
+    printf("%s", str);
+  }
+  
+  //printf("%s\n", inputs);
+}
+
 void printSignalsToOutputs (int n) {
   char str[20];
   char numberStr[10];
@@ -494,4 +558,14 @@ int main( int argc, char *argv[] ) {
    printf("DST-VII 32x32:\n");
    printSignalsToOutputs(32);
    printf("\n");
+
+   printf("-------------PRINTING COMPOSED OUTPUTS OPS--------------------\n");
+   printf("DCT-VIII/ DST-VII 4x4:\n"); 
+   printComposedOutputsOperations(4, trCoreDCT8P4, trCoreDST7P4);
+   printf("DCT-VIII/ DST-VII 8x8:\n"); 
+   printComposedOutputsOperations(8, trCoreDCT8P8, trCoreDST7P8);
+   printf("DCT-VIII/ DST-VII 16x16:\n"); 
+   printComposedOutputsOperations(16, trCoreDCT8P16, trCoreDST7P16);
+   printf("DCT-VIII/ DST-VII 32x32:\n"); 
+   printComposedOutputsOperations(32, trCoreDCT8P32, trCoreDST7P32);
 }
