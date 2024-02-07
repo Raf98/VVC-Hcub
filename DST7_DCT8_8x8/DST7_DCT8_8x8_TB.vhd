@@ -1033,7 +1033,10 @@ stimulus_in: process
 		end loop;		
 		
 		file_close(input);
-		file_close(output);
+		file_close(output_dct_exp);
+		file_close(output_dst_exp);
+		file_close(output_dct);
+		file_close(output_dst);
 		--writeline(output, outline);
 		wait;
 	end process;                                     
