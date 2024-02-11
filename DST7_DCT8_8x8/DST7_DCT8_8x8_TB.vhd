@@ -666,8 +666,8 @@ stimulus_in: process
 		FILE_OPEN(output_dct_exp, "DCT8_8x8_output_exp.txt", READ_MODE);
 		FILE_OPEN(output_dst_exp, "DST7_8x8_output_exp.txt", READ_MODE);
 
-		FILE_OPEN(output_dct, "DCT8_8x8_output.txt", WRITE_MODE);
-		FILE_OPEN(output_dst, "DST7_8x8_output.txt", WRITE_MODE);
+		FILE_OPEN(output_dct, "2OPS-DCT8_8x8_output.txt", WRITE_MODE);
+		FILE_OPEN(output_dst, "2OPS-DST7_8x8_output.txt", WRITE_MODE);
 
 		op <= '0';
 		

@@ -32,9 +32,9 @@ use ieee.std_logic_arith.all;
 USE ieee.numeric_std.ALL;
 USE std.textio.ALL;                                
 
-ENTITY DST7_DCT8_32x32_TB IS
-END DST7_DCT8_32x32_TB;
-ARCHITECTURE DST7_DCT8_32x32_arch OF DST7_DCT8_32x32_TB IS
+ENTITY DCT8_32x32_TB IS
+END DCT8_32x32_TB;
+ARCHITECTURE DCT8_32x32_arch OF DCT8_32x32_TB IS
 -- constants                                                 
 -- signals
 SIGNAL clk :  std_logic := '0';
@@ -487,7 +487,7 @@ procedure assign_output (variable outline: inout line;
 	end procedure assign_output;
 	
 	
-	file input, output_dct_exp, output_dst_exp, output_dct, output_dst: text;
+	file input, output_dct_exp, output_dct: text;
 	
 
 BEGIN
@@ -664,10 +664,8 @@ stimulus_in: process
 		FILE_OPEN(input, "DST7-DCT8_input.txt", READ_MODE);
 		
 		FILE_OPEN(output_dct_exp, "DCT8_32x32_output_exp.txt", READ_MODE);
-		FILE_OPEN(output_dst_exp, "DST7_32x32_output_exp.txt", READ_MODE);
 		
-		FILE_OPEN(output_dct, "2OPS-DCT8_32x32_output.txt", WRITE_MODE);
-		FILE_OPEN(output_dst, "2OPS-DST7_32x32_output.txt", WRITE_MODE);
+		FILE_OPEN(output_dct, "DCT8_32x32_output.txt", WRITE_MODE);
 
 		op <= '0';
 		
@@ -884,158 +882,12 @@ stimulus_in: process
 			
 			writeline(output_dct, outline);
 			
-			
-			op <= '1';
-			
-			--READING EXPECTED DST7 OUTPUTS TO COMPARE
-			readline(output_dst_exp, inline);
-			assign_input(inline, num_out_exp, y_exp0 , blank); 
-			assign_input(inline, num_out_exp, y_exp1 , blank); 
-			assign_input(inline, num_out_exp, y_exp2 , blank); 
-			assign_input(inline, num_out_exp, y_exp3 , blank); 
-			assign_input(inline, num_out_exp, y_exp4 , blank); 
-			assign_input(inline, num_out_exp, y_exp5 , blank); 
-			assign_input(inline, num_out_exp, y_exp6 , blank); 
-			assign_input(inline, num_out_exp, y_exp7 , blank); 
-			assign_input(inline, num_out_exp, y_exp8 , blank); 
-			assign_input(inline, num_out_exp, y_exp9 , blank); 
-			assign_input(inline, num_out_exp, y_exp10, blank); 
-			assign_input(inline, num_out_exp, y_exp11, blank); 
-			assign_input(inline, num_out_exp, y_exp12, blank); 
-			assign_input(inline, num_out_exp, y_exp13, blank); 
-			assign_input(inline, num_out_exp, y_exp14, blank); 
-			assign_input(inline, num_out_exp, y_exp15, blank); 
-			assign_input(inline, num_out_exp, y_exp16, blank); 
-			assign_input(inline, num_out_exp, y_exp17, blank); 
-			assign_input(inline, num_out_exp, y_exp18, blank); 
-			assign_input(inline, num_out_exp, y_exp19, blank); 
-			assign_input(inline, num_out_exp, y_exp20, blank); 
-			assign_input(inline, num_out_exp, y_exp21, blank); 
-			assign_input(inline, num_out_exp, y_exp22, blank); 
-			assign_input(inline, num_out_exp, y_exp23, blank); 
-			assign_input(inline, num_out_exp, y_exp24, blank); 
-			assign_input(inline, num_out_exp, y_exp25, blank); 
-			assign_input(inline, num_out_exp, y_exp26, blank); 
-			assign_input(inline, num_out_exp, y_exp27, blank); 
-			assign_input(inline, num_out_exp, y_exp28, blank); 
-			assign_input(inline, num_out_exp, y_exp29, blank); 
-			assign_input(inline, num_out_exp, y_exp30, blank); 
-			assign_input(inline, num_out_exp, y_exp31, blank); 
-			assign_input(inline, num_out_exp, y_exp32, blank); 
-			assign_input(inline, num_out_exp, y_exp33, blank); 
-			assign_input(inline, num_out_exp, y_exp34, blank); 
-			assign_input(inline, num_out_exp, y_exp35, blank); 
-			assign_input(inline, num_out_exp, y_exp36, blank); 
-			assign_input(inline, num_out_exp, y_exp37, blank); 
-			assign_input(inline, num_out_exp, y_exp38, blank); 
-			assign_input(inline, num_out_exp, y_exp39, blank); 
-			assign_input(inline, num_out_exp, y_exp40, blank); 
-			assign_input(inline, num_out_exp, y_exp41, blank); 
-			assign_input(inline, num_out_exp, y_exp42, blank); 
-			assign_input(inline, num_out_exp, y_exp43, blank); 
-			assign_input(inline, num_out_exp, y_exp44, blank); 
-			assign_input(inline, num_out_exp, y_exp45, blank); 
-			assign_input(inline, num_out_exp, y_exp46, blank); 
-			assign_input(inline, num_out_exp, y_exp47, blank); 
-			assign_input(inline, num_out_exp, y_exp48, blank); 
-			assign_input(inline, num_out_exp, y_exp49, blank); 
-			assign_input(inline, num_out_exp, y_exp50, blank); 
-			assign_input(inline, num_out_exp, y_exp51, blank); 
-			assign_input(inline, num_out_exp, y_exp52, blank); 
-			assign_input(inline, num_out_exp, y_exp53, blank); 
-			assign_input(inline, num_out_exp, y_exp54, blank); 
-			assign_input(inline, num_out_exp, y_exp55, blank); 
-			assign_input(inline, num_out_exp, y_exp56, blank); 
-			assign_input(inline, num_out_exp, y_exp57, blank); 
-			assign_input(inline, num_out_exp, y_exp58, blank); 
-			assign_input(inline, num_out_exp, y_exp59, blank); 
-			assign_input(inline, num_out_exp, y_exp60, blank); 
-			assign_input(inline, num_out_exp, y_exp61, blank); 
-			assign_input(inline, num_out_exp, y_exp62, blank); 
-			assign_input(inline, num_out_exp, y_exp63, blank);
-			
-			
-			wait until(clk'event and clk = '1');
-			
-			--WRITING OUTPUTS TO DST7 OUTPUT FILE (HAS TO BE REMOVED TO GENERATE .VCD KEYING FILE)
-			assign_output(outline, vec_out, str_out, y0 , blank);
-			assign_output(outline, vec_out, str_out, y1 , blank);
-			assign_output(outline, vec_out, str_out, y2 , blank);
-			assign_output(outline, vec_out, str_out, y3 , blank);
-			assign_output(outline, vec_out, str_out, y4 , blank);
-			assign_output(outline, vec_out, str_out, y5 , blank);
-			assign_output(outline, vec_out, str_out, y6 , blank);
-			assign_output(outline, vec_out, str_out, y7 , blank);
-			assign_output(outline, vec_out, str_out, y8 , blank);
-			assign_output(outline, vec_out, str_out, y9 , blank);
-			assign_output(outline, vec_out, str_out, y10, blank);
-			assign_output(outline, vec_out, str_out, y11, blank);
-			assign_output(outline, vec_out, str_out, y12, blank);
-			assign_output(outline, vec_out, str_out, y13, blank);
-			assign_output(outline, vec_out, str_out, y14, blank);
-			assign_output(outline, vec_out, str_out, y15, blank);
-			assign_output(outline, vec_out, str_out, y16, blank);
-			assign_output(outline, vec_out, str_out, y17, blank);
-			assign_output(outline, vec_out, str_out, y18, blank);
-			assign_output(outline, vec_out, str_out, y19, blank);
-			assign_output(outline, vec_out, str_out, y20, blank);
-			assign_output(outline, vec_out, str_out, y21, blank);
-			assign_output(outline, vec_out, str_out, y22, blank);
-			assign_output(outline, vec_out, str_out, y23, blank);
-			assign_output(outline, vec_out, str_out, y24, blank);
-			assign_output(outline, vec_out, str_out, y25, blank);
-			assign_output(outline, vec_out, str_out, y26, blank);
-			assign_output(outline, vec_out, str_out, y27, blank);
-			assign_output(outline, vec_out, str_out, y28, blank);
-			assign_output(outline, vec_out, str_out, y29, blank);
-			assign_output(outline, vec_out, str_out, y30, blank);
-			assign_output(outline, vec_out, str_out, y31, blank);
-			assign_output(outline, vec_out, str_out, y32, blank);
-			assign_output(outline, vec_out, str_out, y33, blank);
-			assign_output(outline, vec_out, str_out, y34, blank);
-			assign_output(outline, vec_out, str_out, y35, blank);
-			assign_output(outline, vec_out, str_out, y36, blank);
-			assign_output(outline, vec_out, str_out, y37, blank);
-			assign_output(outline, vec_out, str_out, y38, blank);
-			assign_output(outline, vec_out, str_out, y39, blank);
-			assign_output(outline, vec_out, str_out, y40, blank);
-			assign_output(outline, vec_out, str_out, y41, blank);
-			assign_output(outline, vec_out, str_out, y42, blank);
-			assign_output(outline, vec_out, str_out, y43, blank);
-			assign_output(outline, vec_out, str_out, y44, blank);
-			assign_output(outline, vec_out, str_out, y45, blank);
-			assign_output(outline, vec_out, str_out, y46, blank);
-			assign_output(outline, vec_out, str_out, y47, blank);
-			assign_output(outline, vec_out, str_out, y48, blank);
-			assign_output(outline, vec_out, str_out, y49, blank);
-			assign_output(outline, vec_out, str_out, y50, blank);
-			assign_output(outline, vec_out, str_out, y51, blank);
-			assign_output(outline, vec_out, str_out, y52, blank);
-			assign_output(outline, vec_out, str_out, y53, blank);
-			assign_output(outline, vec_out, str_out, y54, blank);
-			assign_output(outline, vec_out, str_out, y55, blank);
-			assign_output(outline, vec_out, str_out, y56, blank);
-			assign_output(outline, vec_out, str_out, y57, blank);
-			assign_output(outline, vec_out, str_out, y58, blank);
-			assign_output(outline, vec_out, str_out, y59, blank);
-			assign_output(outline, vec_out, str_out, y60, blank);
-			assign_output(outline, vec_out, str_out, y61, blank);
-			assign_output(outline, vec_out, str_out, y62, blank);
-			assign_output(outline, vec_out, str_out, y63, blank);
-			
-			writeline(output_dst, outline);
-			
-			op <= '0';
-			
-			
 		end loop;		
 		
 		file_close(input);
 		file_close(output_dct_exp);
-		file_close(output_dst_exp);
 		file_close(output_dct);
-		file_close(output_dst);
 		--writeline(output, outline);
 		wait;
 	end process;                                     
-END DST7_DCT8_32x32_arch;
+END DCT8_32x32_arch;
