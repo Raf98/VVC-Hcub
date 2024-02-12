@@ -2,7 +2,7 @@ VVC-DST-DCT
 DST7-DCT8-Golden
 *.exe
 
-Testbench*/*
+*/work
 
 *.vhd.bak
 *.vht.bak

@@ -1,0 +1,56 @@
+C:/Users/LPDar/Documents/PASD/ProjetoFinal/VVC-Hcub/DST7_DCT8_8x8/DST7_8x8_TB.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/LPDar/Documents/PASD/ProjetoFinal/VVC-Hcub/DST7_DCT8_8x8/DST7_8x8_TB.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Loading package NUMERIC_STD
+-- Compiling entity DST7_8x8_TB
+-- Compiling architecture DST7_8x8_arch of DST7_8x8_TB
+
+} {} {}} C:/Users/LPDar/Documents/PASD/ProjetoFinal/VVC-Hcub/DST7_DCT8_8x8/MCUHcubparaDSTVII8x8.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/LPDar/Documents/PASD/ProjetoFinal/VVC-Hcub/DST7_DCT8_8x8/MCUHcubparaDSTVII8x8.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity MCUHcubparaDSTVII8x8
+-- Compiling architecture behavior of MCUHcubparaDSTVII8x8
+
+} {} {}} C:/Users/LPDar/Documents/PASD/ProjetoFinal/VVC-Hcub/DST7_DCT8_8x8/DCT8_8x8_TB.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/LPDar/Documents/PASD/ProjetoFinal/VVC-Hcub/DST7_DCT8_8x8/DCT8_8x8_TB.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Loading package NUMERIC_STD
+-- Compiling entity DCT8_8x8_TB
+-- Compiling architecture DCT8_8x8_arch of DCT8_8x8_TB
+
+} {} {}} C:/Users/LPDar/Documents/PASD/ProjetoFinal/VVC-Hcub/DST7_DCT8_8x8/DST7_DCT8_8x8.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/LPDar/Documents/PASD/ProjetoFinal/VVC-Hcub/DST7_DCT8_8x8/DST7_DCT8_8x8.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity DST7_DCT8_8x8
+-- Compiling architecture behavior of DST7_DCT8_8x8
+
+} {} {}} C:/Users/LPDar/Documents/PASD/ProjetoFinal/VVC-Hcub/DST7_DCT8_8x8/DST7_DCT8_8x8_TB.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/LPDar/Documents/PASD/ProjetoFinal/VVC-Hcub/DST7_DCT8_8x8/DST7_DCT8_8x8_TB.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Loading package NUMERIC_STD
+-- Compiling entity DST7_DCT8_8x8_TB
+-- Compiling architecture DST7_DCT8_8x8_arch of DST7_DCT8_8x8_TB
+
+} {} {}}
