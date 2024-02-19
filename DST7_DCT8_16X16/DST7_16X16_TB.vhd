@@ -661,11 +661,11 @@ stimulus_in: process
 	
     begin
     
-		FILE_OPEN(input, "DST7-DCT8_input.txt", READ_MODE);
+		FILE_OPEN(input, "DST7-DCT8_input16x16_res.txt", READ_MODE);
 
-		FILE_OPEN(output_dst_exp, "DST7_16x16_output_exp.txt", READ_MODE);
+		FILE_OPEN(output_dst_exp, "DST7_16x16_output_res_exp.txt", READ_MODE);
 
-		FILE_OPEN(output_dst, "DST7_16x16_output.txt", WRITE_MODE);
+		FILE_OPEN(output_dst, "DST7_16x16_output_res.txt", WRITE_MODE);
 
 		op <= '1';
 		
