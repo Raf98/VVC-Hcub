@@ -1,0 +1,10 @@
+Geração de arquivos de chaveamento .vcd para cada arquitetura implementada: 
+
+irun -64 -v93 -top worklib.DCT8_8x8_TB ../DST7_DCT8_8x8/*.vhd ../testbenchs/DCT8_8x8_TB.vhd -input ../testbenchs/DCT8_8x8_vcd.tcl -access +rw  > $_REPORTS_PATH/irun_DCT8_8x8.log
+irun -64 -v93 -top worklib.DST7_8x8_TB ../DST7_DCT8_8x8/*.vhd ../testbenchs/DST7_8x8_TB.vhd -input ../testbenchs/DST7_8x8_vcd.tcl -access +rw  > $_REPORTS_PATH/irun_DST7_8x8.log
+
+irun -64 -v93 -top worklib.DCT8_16x16_TB ../DST7_DCT8_16x16/*.vhd ../testbenchs/DCT8_16x16_TB.vhd -input ../testbenchs/DCT8_16x16_vcd.tcl -access +rw > $_REPORTS_PATH/irun_DCT8_16x16.log
+irun -64 -v93 -top worklib.DST7_16x16_TB ../DST7_DCT8_16x16/*.vhd ../testbenchs/DST7_16x16_TB.vhd -input ../testbenchs/DST7_16x16_vcd.tcl -access +rw > $_REPORTS_PATH/irun_DST7_16x16.log
+
+irun -64 -v93 -top worklib.DCT8_32x32_TB ../DST7_DCT8_32x32/*.vhd ../testbenchs/DCT8_32x32_TB.vhd -input ../testbenchs/DCT8_32x32_vcd.tcl -access +rw > $_REPORTS_PATH/irun_DCT8_32x32.log
+irun -64 -v93 -top worklib.DST7_32x32_TB ../DST7_DCT8_32x32/*.vhd ../testbenchs/DST7_32x32_TB.vhd -input ../testbenchs/DST7_32x32_vcd.tcl -access +rw > $_REPORTS_PATH/irun_DST7_32x32.log
